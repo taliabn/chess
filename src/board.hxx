@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "player.hxx"
 #include <ge211.hxx>
+#include "position_set.hxx"
+#include "player.hxx"
 
 #include <iostream>
 #include <unordered_map>
