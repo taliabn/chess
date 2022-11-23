@@ -1,0 +1,21 @@
+Performing C++ SOURCE FILE Test LDFLAG_FSANITIZE_UNDEFINED_OKAY failed with the following output:
+Change Dir: C:/Users/talia/OneDrive/Documents/2022_Fall/COMP_SCI_211/TJ_final_project/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe -f Makefile cmTC_c949d/fast && C:/MinGW/bin/mingw32-make.exe  -f CMakeFiles\cmTC_c949d.dir\build.make CMakeFiles/cmTC_c949d.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/Users/talia/OneDrive/Documents/2022_Fall/COMP_SCI_211/TJ_final_project/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c949d.dir/src.cxx.obj
+C:\MinGW\bin\g++.exe -DLDFLAG_FSANITIZE_UNDEFINED_OKAY  -fsanitize=undefined  -o CMakeFiles\cmTC_c949d.dir\src.cxx.obj -c C:\Users\talia\OneDrive\Documents\2022_Fall\COMP_SCI_211\TJ_final_project\cmake-build-debug\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_c949d.exe
+"C:\Program Files\JetBrains\CLion 2022.2.4\bin\cmake\win\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_c949d.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2022.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_c949d.dir/objects.a
+C:\MinGW\bin\ar.exe qc CMakeFiles\cmTC_c949d.dir/objects.a @CMakeFiles\cmTC_c949d.dir\objects1.rsp
+C:\MinGW\bin\g++.exe  -fsanitize=undefined  -Wl,--whole-archive CMakeFiles\cmTC_c949d.dir/objects.a -Wl,--no-whole-archive -o cmTC_c949d.exe -Wl,--out-implib,libcmTC_c949d.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_c949d.dir\linklibs.rsp
+C:/MinGW/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/bin/ld.exe: cannot find -lubsan
+collect2.exe: error: ld returned 1 exit status
+mingw32-make.exe[1]: *** [CMakeFiles\cmTC_c949d.dir\build.make:100: cmTC_c949d.exe] Error 1
+mingw32-make.exe[1]: Leaving directory 'C:/Users/talia/OneDrive/Documents/2022_Fall/COMP_SCI_211/TJ_final_project/cmake-build-debug/CMakeFiles/CMakeTmp'
+mingw32-make.exe: *** [Makefile:126: cmTC_c949d/fast] Error 2
+
+
+Source file was:
+int main(){}

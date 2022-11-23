@@ -1,0 +1,227 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.3"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						1,
+						4
+					]
+				},
+				{
+					"build" : ".cs211/lib/catch",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.cs211.lib.catch-Debug-0be7af5dddcbe1b9fb4b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.3"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : ".cs211/lib/catch",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : ".cs211/lib/ge211",
+					"childIndexes" : 
+					[
+						3,
+						4,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.cs211.lib.ge211-Debug-ea496206c7d1272a21d9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : ".cs211/lib/ge211"
+				},
+				{
+					"build" : ".cs211/lib/ge211/3rdparty/utf8-cpp",
+					"jsonFile" : "directory-.cs211.lib.ge211.3rdparty.utf8-cpp-Debug-b5efd23b5050b1270664.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 3,
+					"source" : ".cs211/lib/ge211/3rdparty/utf8-cpp"
+				},
+				{
+					"build" : ".cs211/lib/ge211/src",
+					"jsonFile" : "directory-.cs211.lib.ge211.src-Debug-d83fe2f67822953784c4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 2,
+					"source" : ".cs211/lib/ge211/src",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : ".cs211/lib/ge211/example",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.cs211.lib.ge211.example-Debug-e77c99582b2356fef42a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 4,
+					"source" : ".cs211/lib/ge211/example",
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "chess",
+					"targetIndexes" : 
+					[
+						1,
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "Catch2",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						3,
+						4
+					],
+					"directoryIndexes" : 
+					[
+						2,
+						4
+					],
+					"name" : "ge211",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "utf8-cpp",
+					"parentIndex" : 2
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "ge211_examples",
+					"parentIndex" : 2,
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "catch::@be6f5491b685a53c462d",
+					"jsonFile" : "target-catch-Debug-fd8a4b78e6dd3850495f.json",
+					"name" : "catch",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "chess::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chess-Debug-76f3b9b0fb2472ae5361.json",
+					"name" : "chess",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "fireworks::@7a7c4f16a1d6abcd2711",
+					"jsonFile" : "target-fireworks-Debug-9d9ffaa58f4f9487d608.json",
+					"name" : "fireworks",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "ge211::@c6d847fed01cad5c45fc",
+					"jsonFile" : "target-ge211-Debug-9ea38fdccbe952dc14a0.json",
+					"name" : "ge211",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "model_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-model_test-Debug-c70edfb92ab0c910d893.json",
+					"name" : "model_test",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/talia/OneDrive/Documents/2022_Fall/COMP_SCI_211/TJ_final_project/cmake-build-debug",
+		"source" : "C:/Users/talia/OneDrive/Documents/2022_Fall/COMP_SCI_211/TJ_final_project"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

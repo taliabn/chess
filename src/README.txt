@@ -1,0 +1,1 @@
+grid_size in view.cxx is arbitrarily chosen
