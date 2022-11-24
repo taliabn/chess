@@ -8,8 +8,7 @@ using namespace ge211;
 
 Model::Model()
         : board_({8, 8})
-{
-}
+{}
 
 Model::Rectangle
 Model::board() const
@@ -17,8 +16,20 @@ Model::board() const
     return board_.all_positions();
 }
 
-Player
-Model::operator[](Position pos) const
+// currently board will return a Player, but we want a Piece
+// Piece
+// Model::operator[](Position pos) const
+// {
+//     return board_[pos];
+// }
+
+void
+Model::play_move(Position src, Position dst)
 {
-    return board_[pos];
+    // TODO
+}
+
+bool Model::check_king() {
+    // TODO
+    return true; // this is wrong
 }
