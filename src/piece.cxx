@@ -11,13 +11,37 @@ Piece::Piece(Player player, Position pos)
 // This shouldn't ever be called, all children will override calculate_moves
 Position_set
 Piece::calculate_moves(Position pos) {
-    Position_set pset;
+    Position_set pset = {};
     return pset;
 }
 
 void
 Piece::set_moves(Position pos){
     allowable_moves_ = calculate_moves(pos);
+}
+
+Position_set
+Piece::find_line(Position pos, std::vector<ge211::geometry::Dims<int>> dims,
+                 Model const& model, bool no_line) {
+    Position_set pset = {};
+
+    for (auto dim: dims) {
+        Position advanced_pos = {pos.x + dim.x, pos.y + dim.y};
+
+        while (good_position(advanced_pos)) {
+            if (model[advanced_pos].player != player_) {
+                pset[advanced_pos] = true;
+            }
+
+            if (model[advanced_pos].player == other_player(player_) ||
+            no_line) {
+                break;
+            }
+        }
+    }
+
+    return pset;
+
 }
 
 Pawn::Pawn(Player player, Position pos)
@@ -36,7 +60,7 @@ Pawn::Pawn(Player player, Position pos)
 
 Position_set
 Pawn::calculate_moves(Position pos, Model const& model) {
-    Position_set pset;
+    Position_set pset = {};
     int move_direction = 1;
     if(player_ == Player::dark) {
         move_direction = -1;
@@ -93,19 +117,48 @@ Knight::Knight(Player player, Position pos)
 
 Position_set
 Knight::calculate_moves(Position pos, Model const& model) {
-    Position_set pset;
-
     std::vector<ge211::geometry::Dims<int>> move_dims = {
             {1, 2}, {2, 1} {-1, 2}, {-2, 1}, {1, -2}, {2, -1}, {-1, -2}, {-2,
                                                                           -1}
     };
 
-    //Need access to good_position function
-    for (auto dims: move_dims) {
-        if (good_position(pos + dims) && model[pos + dims].player != player_) {
-            pset[{pos + dims}] = true;
-        }
-    }
-    
-    return pset;
+    return find_line(pos, move_dims, model, true);
+}
+
+Position_set
+Bishop::calculate_moves(Position pos, Model const& model) {
+    std::vector<ge211::geometry::Dims<int>> move_dims = {
+            {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
+    };
+
+    return find_line(pos, move_dims, model, false);
+}
+
+Position_set
+Rook::calculate_moves(Position pos, Model const& model) {
+    std::vector<ge211::geometry::Dims<int>> move_dims = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+    };
+
+    return find_line(pos, move_dims, model, false);
+}
+
+Position_set
+Queen::calculate_moves(Position pos, Model const& model) {
+    std::vector<ge211::geometry::Dims<int>> move_dims = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
+    };
+
+    return find_line(pos, move_dims, model, false);
+}
+
+Position_set
+King::calculate_moves(Position pos, Model const& model) {
+    std::vector<ge211::geometry::Dims<int>> move_dims = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
+    };
+
+    return find_line(pos, move_dims, model, true);
 }
