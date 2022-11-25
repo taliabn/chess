@@ -57,7 +57,7 @@ public:
     //
     //  - Throws `ge211::Client_logic_error` if the position is out of
     //    bounds.
-    // Piece operator[](Position) const;
+    Piece operator[](Position) const;
 
 
     // move piece at position src to position dst
