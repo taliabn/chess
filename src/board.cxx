@@ -8,18 +8,37 @@ Board::Board()
 {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            squares_[i][j] = Piece(); // default "dummy" piece
+            squares_[i][j] = Piece(); // default "dummy" piece (player=neither)
         }
     }
+    setup_pieces_();
 }
 
 void Board::setup_pieces_(){
-    // TODO
-}
 
-void
-Board::add_piece_(){
-    // TODO
+    for (int j = 0; j < 8; j++) {
+        squares_[1][j] = Pawn(Player::light, {1,j});
+        squares_[6][j] = Pawn(Player::dark, {6,j});
+    }
+
+    for (int j = 0; j < 8; j = j + 7) {
+        squares_[0][j] = Rook(Player::light, {0,j});
+        squares_[7][j] = Rook(Player::dark, {7,j});
+    }
+
+    for (int j = 1; j < 8; j = j + 5) {
+        squares_[0][j] = Knight(Player::light, {0,j});
+        squares_[7][j] = Knight(Player::dark, {7,j});
+    }
+    for (int j = 2; j < 8; j = j + 3) {
+        squares_[0][j] = Bishop(Player::light, {0,j});
+        squares_[7][j] = Bishop(Player::dark, {7,j});
+    }
+
+    squares_[0][3] = Queen(Player::dark, {0,3});
+    squares_[0][4] = King(Player::dark, {0,4});
+    squares_[7][3] = Queen(Player::light, {7,3});
+    squares_[7][4] = King(Player::light, {7,4});
 }
 
 

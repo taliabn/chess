@@ -38,9 +38,8 @@ private:
     //
     // PRIVATE HELPER FUNCTION MEMBERS
     //
+
     void bounds_check_(Position where) const;
-    // set one piece of board
-    void add_piece_();
     // initialize pieces in correct positions to start game
     void setup_pieces_();
 
