@@ -1,4 +1,6 @@
 #include "piece.hxx"
+#include "board.hxx"
+#include "model.hxx"
 
 Piece::Piece(Player player, Position pos)
     : player_(player)
@@ -33,9 +35,37 @@ Pawn::Pawn(Player player, Position pos)
 
 
 Position_set
-Pawn::calculate_moves(Position pos) {
-    // TODO
+Pawn::calculate_moves(Position pos, Model const& model) {
     Position_set pset;
+    int move_direction = 1;
+    if(player_ == Player::dark) {
+        move_direction = -1;
+    }
+
+    //Add first double move if pawn hasn't moved yet and square is unoccupied
+    if(first_move_ && model[{pos.x, pos.y + (2 * move_direction)}] ==
+    Player::neither) {
+        pset[{pos.x, pos.y + (2 * move_direction)}] = true;
+    }
+
+    //Add advancing moves if pawn hasn't reached the end of the board
+    Position advanced_pos = {pos.x, pos.y + move_direction};
+    if((0 <= advanced_pos.y) && (7 >= advanced_pos.y) && model[advanced_pos]
+    .player == Player::neither) {
+        pset[{advanced_pos}] = true;
+    }
+
+    //Calculate capture moves
+    if(model[{advanced_pos.x - 1, advanced_pos.y}].player == other_player
+    (player_)) {
+        pset[{advanced_pos.x - 1, advanced_pos.y}] = true;
+    }
+
+    if(model[{advanced_pos.x + 1, advanced_pos.y}].player == other_player
+            (player_)) {
+        pset[{advanced_pos.x + 1, advanced_pos.y}] = true;
+    }
+
     // allowable_moves_ = pset; // this is wrong
     return pset;
 }
@@ -48,3 +78,34 @@ Pawn::calculate_moves(Position pos) {
 // }
 // TODO constructors for each piece type
 // TODO calculate_moves for each piece type
+
+Knight::Knight(Player player, Position pos)
+        :Piece(player, pos),
+        // these sprites are just as a test, not necessarily final choice for image
+        // use ternary operator to determine which sprite to use based on player
+         piece_sprite_(player==Player::light ?
+                       ge211::Image_sprite("./Resources/white-knight.png") :
+                       ge211::Image_sprite("./Resources/dark-knight.png"))
+{
+    // // this will initialize value in available_moves
+    // calculate_moves(pos);
+};
+
+Position_set
+Knight::calculate_moves(Position pos, Model const& model) {
+    Position_set pset;
+
+    std::vector<ge211::geometry::Dims<int>> move_dims = {
+            {1, 2}, {2, 1} {-1, 2}, {-2, 1}, {1, -2}, {2, -1}, {-1, -2}, {-2,
+                                                                          -1}
+    };
+
+    //Need access to good_position function
+    for (auto dims: move_dims) {
+        if (good_position(pos + dims) && model[pos + dims].player != player_) {
+            pset[{pos + dims}] = true;
+        }
+    }
+    
+    return pset;
+}
