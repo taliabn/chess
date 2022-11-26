@@ -1,24 +1,46 @@
-/*******************************************/
-/*** DO NOT CHANGE ANYTHING IN THIS FILE ***/
-/*******************************************/
-
 #include "board.hxx"
 #include <algorithm>
 
 using namespace ge211;
 
-Board::Board(Dimensions dims)
-        : dims_(dims)
+Board::Board()
+    : dims_(8,8)
 {
-    if (dims_.width < 2 || dims_.height < 2) {
-        throw Client_logic_error("Board::Board: dims too small");
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            squares_[i][j] = Piece(); // default "dummy" piece (player=neither)
+        }
+    }
+    setup_pieces_();
+}
+
+void Board::setup_pieces_(){
+
+    for (int j = 0; j < 8; j++) {
+        squares_[1][j] = Pawn(Player::light, {1,j});
+        squares_[6][j] = Pawn(Player::dark, {6,j});
     }
 
-    if (dims_.width > Position_set::coord_limit ||
-        dims_.height > Position_set::coord_limit) {
-        throw Client_logic_error("Board::Board: dims too large");
+    for (int j = 0; j < 8; j = j + 7) {
+        squares_[0][j] = Rook(Player::light, {0,j});
+        squares_[7][j] = Rook(Player::dark, {7,j});
     }
+
+    for (int j = 1; j < 8; j = j + 5) {
+        squares_[0][j] = Knight(Player::light, {0,j});
+        squares_[7][j] = Knight(Player::dark, {7,j});
+    }
+    for (int j = 2; j < 8; j = j + 3) {
+        squares_[0][j] = Bishop(Player::light, {0,j});
+        squares_[7][j] = Bishop(Player::dark, {7,j});
+    }
+
+    squares_[0][3] = Queen(Player::dark, {0,3});
+    squares_[0][4] = King(Player::dark, {0,4});
+    squares_[7][3] = Queen(Player::light, {7,3});
+    squares_[7][4] = King(Player::light, {7,4});
 }
+
 
 Board::Dimensions
 Board::dimensions() const
@@ -26,47 +48,16 @@ Board::dimensions() const
     return dims_;
 }
 
-bool
-Board::good_position(Position pos) const
-{
-    return 0 <= pos.x && pos.x < dims_.width &&
-           0 <= pos.y && pos.y < dims_.height;
-}
+// bool
+// Board::has_piece_(Position pos) {
+//     return squares_.find(pos)==squares_.end();
+// }
 
-Player
+
+Piece
 Board::operator[](Position pos) const
 {
-    bounds_check_(pos);
-    return get_(pos);
-}
-
-Board::reference
-Board::operator[](Position pos)
-{
-    bounds_check_(pos);
-    return reference(*this, pos);
-}
-
-size_t
-Board::count_player(Player player) const
-{
-    switch (player) {
-    case Player::light:
-        return light_.size();
-    case Player::dark:
-        return dark_.size();
-    default:
-        return dims_.width * dims_.height -
-               light_.size() - dark_.size();
-    }
-}
-
-Board::Rectangle
-Board::center_positions() const
-{
-    return Rectangle::from_top_left({dims_.width / 2 - 1,
-                                     dims_.height / 2 - 1},
-                                    {2, 2});
+    return squares_[pos.x][pos.y];
 }
 
 static std::vector<Board::Dimensions>
@@ -92,71 +83,13 @@ Board::all_directions()
     return result;
 }
 
+
 Board::Rectangle
 Board::all_positions() const
 {
     return Rectangle::from_top_left(the_origin, dims_);
 }
 
-bool
-operator==(Board const& b1, Board const& b2)
-{
-    return b1.dims_ == b2.dims_ &&
-           b1.light_ == b2.light_ &&
-           b1.dark_ == b2.dark_;
-}
-
-Player
-Board::get_(Position pos) const
-{
-    if (dark_[pos]) {
-        return Player::dark;
-    } else if (light_[pos]) {
-        return Player::light;
-    } else {
-        return Player::neither;
-    }
-}
-
-void
-Board::set_(Position pos, Player player)
-{
-    switch (player) {
-    case Player::dark:
-        dark_[pos] = true;
-        light_[pos] = false;
-        break;
-
-    case Player::light:
-        dark_[pos] = false;
-        light_[pos] = true;
-        break;
-
-    default:
-        dark_[pos] = false;
-        light_[pos] = false;
-    }
-}
-
-void
-Board::set_all(Position_set pos_set, Player player)
-{
-    switch (player) {
-    case Player::light:
-        light_ |= pos_set;
-        dark_ &= ~pos_set;
-        break;
-
-    case Player::dark:
-        dark_ |= pos_set;
-        light_ &= ~pos_set;
-        break;
-
-    default:
-        dark_ &= ~pos_set;
-        light_ &= ~pos_set;
-    }
-}
 
 void
 Board::bounds_check_(Position pos) const
@@ -166,68 +99,10 @@ Board::bounds_check_(Position pos) const
     }
 }
 
+
 bool
-operator!=(Board const& b1, Board const& b2)
+Board::good_position(Position pos) const
 {
-    return !(b1 == b2);
+    return 0 <= pos.x && pos.x < dims_.width &&
+           0 <= pos.y && pos.y < dims_.height;
 }
-
-std::ostream&
-operator<<(std::ostream& os, Board const& board)
-{
-    Board::Dimensions dims = board.dimensions();
-
-    for (int y = 0; y < dims.height; ++y) {
-        for (int x = 0; x < dims.width; ++x) {
-            os << board[{x, y}];
-        }
-        os << "\n";
-    }
-
-    return os;
-}
-
-Board::reference::reference(Board& board, Position pos) noexcept
-        : board_(board),
-          pos_(pos)
-{ }
-
-Board::reference&
-Board::reference::operator=(reference const& that) noexcept
-{
-    *this = Player(that);
-    return *this;
-}
-
-Board::reference&
-Board::reference::operator=(Player player) noexcept
-{
-    board_.set_(pos_, player);
-    return *this;
-}
-
-Board::reference::operator Player() const noexcept
-{
-    return board_.get_(pos_);
-}
-
-Board::multi_reference
-Board::at_set(Position_set pos_set)
-{
-    return multi_reference(*this, pos_set);
-}
-
-Board::multi_reference::multi_reference(
-        Board& board,
-        Position_set pos_set) noexcept
-        : board_(board),
-          pos_set_(pos_set)
-{ }
-
-Board::multi_reference&
-Board::multi_reference::operator=(Player player) noexcept
-{
-    board_.set_all(pos_set_, player);
-    return *this;
-}
-
