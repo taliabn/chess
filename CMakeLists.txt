@@ -11,7 +11,8 @@ set(MODEL_SRC
         src/model.cxx
         src/player.cxx
         src/position_set.cxx
-        src/board.cxx)
+        src/board.cxx
+        src/piece.cxx)
 
 # TODO: PUT ADDITIONAL NON-MODEL (UI) .cxx FILES IN THIS LIST:
 add_program(${GAME_EXE}

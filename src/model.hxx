@@ -30,6 +30,10 @@ public:
     // Returns a rectangle containing all the positions of the board.
     // This can be used to iterate over the positions.
     Rectangle board() const;
+    // Board board_squares() const;
+    void setup_pieces(Board const&);
+
+    // Returns whether the game is finished. This is true when neither
 
     // Returns whether the game is finished. This is true when neither
     // player can move.
@@ -58,6 +62,7 @@ public:
     //  - Throws `ge211::Client_logic_error` if the position is out of
     //    bounds.
     Piece operator[](Position) const;
+    Piece piece_at(Position) const;
 
 
     // move piece at position src to position dst

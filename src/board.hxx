@@ -3,7 +3,6 @@
 #include "player.hxx"
 #include "piece.hxx"
 #include <ge211.hxx>
-
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
@@ -21,7 +20,7 @@ public:
     using Dimensions = ge211::Dims<int>;
 
     /// Board positions will use `int` coordinates.
-    using Position = Piece::Position;
+    using Position = ge211::Posn<int>;
 
     /// Board rectangles will use `int` coordinates.
     using Rectangle = ge211::Rect<int>;
@@ -41,7 +40,6 @@ private:
 
     void bounds_check_(Position where) const;
     // initialize pieces in correct positions to start game
-    void setup_pieces_();
 
 
 public:
@@ -63,7 +61,7 @@ public:
 
     /// Returns whether the given position is in bounds.
     bool good_position(Position) const;
-
+    void set_piece(Piece, Position);
     /// Returns the `Piece` stored at `pos`.
     ///
     /// ## Errors
@@ -71,7 +69,7 @@ public:
     ///  - throws `ge211::Client_logic_error` if `!good_position(pos)`.
     Piece operator[](Position pos) const;
 
-
+    Piece piece_at(Position pos) const;
     /// Returns a reference to a `std::vector` containing all eight "unit
     /// direction vectors". In Python notation, these are:
     ///
