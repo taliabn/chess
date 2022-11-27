@@ -1,6 +1,7 @@
 #include "model.hxx"
 
 using namespace ge211;
+using namespace std;
 
 Model::Model()
 {
@@ -18,8 +19,8 @@ Model::board() const
 void Model::setup_pieces(Board const& board){
 
     for (int j = 0; j < 8; j++) {
-        // squares_[1][j] = Pawn(Player::light, {1,j});
-        // squares_[6][j] = Pawn(Player::dark, {6,j});
+        board_.set_piece(Pawn(Player::light, Position(1,j)), {0,j});
+        board_.set_piece(Pawn(Player::dark, Position (6,j)), {7, j});
     }
 
     for (int j = 0; j < 8; j = j + 7) {
@@ -43,12 +44,12 @@ void Model::setup_pieces(Board const& board){
 }
 
 
-
 Piece
 Model::piece_at(Position pos) const
 {
     return board_[pos];
 }
+
 
 Piece
 Model::operator[](Position pos) const
@@ -56,13 +57,41 @@ Model::operator[](Position pos) const
     return board_[pos];
 }
 
+
 void
-Model::play_move(Position src, Position dst)
-{
-    // TODO
+Model::on_first_click(Position pos){
+    piece_at(pos).set_moves(pos, board_);
+    piece_clicked_ = true;
+    square_clicked_ = pos;
 }
 
-bool Model::check_king() {
-    // TODO
-    return true; // this is wrong
+
+void
+Model::play_move(Position dst)
+{
+    board_.set_piece(piece_at(square_clicked_), dst);
+    board_.set_piece(Piece(), square_clicked_);
+    piece_clicked_ = false;
+    square_clicked_ = {-1, -1};
+
+    if (!check_king()) {
+        // game is now over
+        turn_ = Player::neither;
+    } else {
+        turn_ = other_player(turn_);
+    }
+}
+
+
+bool Model::check_king()
+{
+    const char *king = "4King";
+    for (auto pos: board()) {
+        // first condition checks if piece is of type King
+        if ((strcmp(typeid(piece_at(pos)).name(), king) == 0) && piece_at
+        (pos).player() == other_player(turn_) ){
+            return true;
+        }
+    }
+    return false;
 }

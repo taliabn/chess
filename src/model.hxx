@@ -4,13 +4,16 @@
 #include "player.hxx"
 #include "board.hxx"
 #include "piece.hxx"
+#include <string.h>
 #include <iostream>
 #include <vector>
+#include <typeinfo>
 
 // Represents the state of the chess game
 class Model
 {
 public:
+
     /***************************************************/
     /*** DON'T CHANGE ANYTHING IN THE PUBLIC SECTION ***/
     /***************************************************/
@@ -30,13 +33,11 @@ public:
     // Returns a rectangle containing all the positions of the board.
     // This can be used to iterate over the positions.
     Rectangle board() const;
-    // Board board_squares() const;
+    // adds pieces to the board in the appropriate starting locations
     void setup_pieces(Board const&);
 
-    // Returns whether the game is finished. This is true when neither
-
-    // Returns whether the game is finished. This is true when neither
-    // player can move.
+    // Returns whether the game is finished. This is true when one player's
+    // king has been taken
     bool is_game_over() const
     { return turn() == Player::neither; }
 
@@ -50,31 +51,32 @@ public:
     Player winner() const
     { return winner_; }
 
-    // Returns the status of if a playable piece has been selected.
-    bool piece_clicked() const
-    { return piece_clicked_; }
-
-    // Returns the player at the given position, or `Player::neither` if
-    // the position is unoccupied.
-    //
-    // ## Errors
-    //
-    //  - Throws `ge211::Client_logic_error` if the position is out of
-    //    bounds.
+    // Returns the piece at the given position
     Piece operator[](Position) const;
     Piece piece_at(Position) const;
 
+    void on_first_click(Position);
 
-    // move piece at position src to position dst
-    void play_move(Position src, Position dst);
+    bool piece_clicked() const
+    { return piece_clicked_; }
 
-    // check if turn's player has a king
+    Position square_clicked() const
+    { return square_clicked_; }
+
+    // move piece at position square_clicked to position dst
+    void play_move(Position dst);
+
+    // check if other player has a king
     bool check_king();
+
 
 private:
     Player turn_   = Player::light;
     Player winner_ = Player::neither;
     Board board_;
-
+    // has a playable piece been selected to be moved
     bool piece_clicked_ = false;
+    // if so, what square is it in
+    Position square_clicked_ = {-1,-1};
+
 };
