@@ -44,7 +44,6 @@ View::screen_to_board(View::Position pos) const
 View::Dimensions
 View::initial_window_dimensions() const
 {
-    // You can change this if you want:
     return grid_size * model_.board().dimensions();
 }
 
