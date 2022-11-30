@@ -9,6 +9,7 @@ class Controller : public ge211::Abstract_game
 {
 public:
     Controller();
+    using Position = ge211::Posn<int>;
 
 protected:
     // These three delegate to the view:
@@ -24,6 +25,4 @@ protected:
 private:
     Model model_;
     View view_;
-
-
 };

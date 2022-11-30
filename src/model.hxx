@@ -2,27 +2,23 @@
 
 #include <ge211.hxx>
 #include "player.hxx"
-#include "board.hxx"
 #include "piece.hxx"
-#include <iostream>
-#include <vector>
+#include <string.h>
+
 
 // Represents the state of the chess game
 class Model
 {
 public:
-    /***************************************************/
-    /*** DON'T CHANGE ANYTHING IN THE PUBLIC SECTION ***/
-    /***************************************************/
 
-    // Model dimensions will use `int` coordinates, as board dimensions do.
-    using Dimensions = Board::Dimensions;
+    // Model dimensions will use `int` coordinates
+    using Dimensions = ge211::Dims<int>;
 
-    // Model positions will use `int` coordinates, as board positions do.
-    using Position = Board::Position;
+    // Model positions will use `int` coordinates
+    using Position = ge211::Posn<int>;
 
-    // Model rectangles will use `int` coordinates, as board rectangles do.
-    using Rectangle = Board::Rectangle;
+    // Model rectangles will use `int` coordinates
+    using Rectangle = ge211::Rect<int>;;
 
     // Constructs a model with an 8x8 board
     explicit Model();
@@ -31,8 +27,11 @@ public:
     // This can be used to iterate over the positions.
     Rectangle board() const;
 
-    // Returns whether the game is finished. This is true when neither
-    // player can move.
+    // initialize pieces in correct positions to start game
+    void setup_pieces();
+
+    // Returns whether the game is finished. This is true when one player's
+    // king has been taken
     bool is_game_over() const
     { return turn() == Player::neither; }
 
@@ -46,30 +45,43 @@ public:
     Player winner() const
     { return winner_; }
 
-    // Returns the status of if a playable piece has been selected.
-    bool piece_clicked() const
-    { return piece_clicked_; }
-
-    // Returns the player at the given position, or `Player::neither` if
-    // the position is unoccupied.
-    //
-    // ## Errors
-    //
-    //  - Throws `ge211::Client_logic_error` if the position is out of
-    //    bounds.
+    // Returns the piece at the given position
+    // this gets used by the controller
     Piece operator[](Position) const;
 
+    // selects a piece
+        // unchecked precondition: piece can be moved
+    void on_first_click(Position);
 
-    // move piece at position src to position dst
-    void play_move(Position src, Position dst);
+    // returns a playable piece been selected to be moved
+    bool piece_clicked() const
+    { return piece_clicked_; }
+    // returns the position selected piece is in
+    Position square_clicked() const
+    { return square_clicked_; }
 
-    // check if turn's player has a king
-    bool check_king();
+    // move piece at position square_clicked to position dst
+    void play_move(Position dst);
+
+    // Returns a rectangle containing all the positions of the board. This
+    // can be used to iterate over the positions:
+    Rectangle all_positions() const;
 
 private:
     Player turn_   = Player::light;
     Player winner_ = Player::neither;
-    Board board_;
-
+    Dimensions dims_;
+    Piece squares_[8][8]; // holds Pieces to track state of game
+    // has a playable piece been selected to be moved
     bool piece_clicked_ = false;
+    // if so, what position is it located at
+    Position square_clicked_ = {-1,-1};
+
+    // Returns the piece located in squares_ at the given position
+        // this is used internally within Model
+    Piece piece_at_(ge211::Posn<int>);
+    // check if other player has a king
+    bool check_king_();
+    // Sets given position on board to hold the given piece
+    void set_piece_(Piece, Position);
 };
