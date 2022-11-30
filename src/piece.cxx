@@ -71,7 +71,6 @@ Pawn::Pawn(Player player, Position pos, Piece (&squares)[8][8])
         //  piece_sprite_(player==Player::light ?
         //                ge211::Image_sprite("./Resources/white-pawn.png") :
         //                ge211::Image_sprite("./Resources/dark-pawn.png")),
-         first_move_(true)
 {}
 
 Position_set
@@ -82,8 +81,11 @@ Pawn::calculate_moves(Position pos, Piece (&squares)[8][8]) {
         move_direction = -1;
     }
 
+    bool first_move = (player_ == Player::light && pos.y == 1) || (player_ ==
+            Player::dark && pos.y == 6);
+
     //Add first double move if pawn hasn't moved yet and square is unoccupied
-    if(first_move_ && piece_at_({pos.x, pos.y + (2 * move_direction)},
+    if(first_move && piece_at_({pos.x, pos.y + (2 * move_direction)},
                                squares).player() == Player::neither) {
         pset[{pos.x, pos.y + (2 * move_direction)}] = true;
     }
@@ -97,25 +99,17 @@ Pawn::calculate_moves(Position pos, Piece (&squares)[8][8]) {
 
     //Calculate capture moves
     if(piece_at_({advanced_pos.x - 1, advanced_pos.y}, squares).player() ==
-    other_player
-            (player_)) {
+        other_player(player_)) {
         pset[{advanced_pos.x - 1, advanced_pos.y}] = true;
     }
 
     if(piece_at_({advanced_pos.x + 1, advanced_pos.y}, squares).player() ==
-    other_player
-            (player_)) {
+        other_player(player_)) {
         pset[{advanced_pos.x + 1, advanced_pos.y}] = true;
     }
 
     return pset;
 }
-
-void
-Pawn::update_first_move() {
-    first_move_ = false;
-}
-
 
 Knight::Knight(Player player, Position pos, Piece (&squares)[8][8])
         :Piece(player, pos, squares)
