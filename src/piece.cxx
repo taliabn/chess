@@ -130,8 +130,8 @@ Bishop::Bishop(Player player, Position pos)
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
          piece_sprite_(player==Player::light ?
-                       ge211::Image_sprite("./Resources/white-knight.png") :
-                       ge211::Image_sprite("./Resources/dark-knight.png"))
+                       ge211::Image_sprite("./Resources/white-bishop.png") :
+                       ge211::Image_sprite("./Resources/dark-bishop.png"))
 {
     // // this will initialize value in available_moves
     // calculate_moves(pos);
@@ -151,8 +151,8 @@ Rook::Rook(Player player, Position pos)
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
          piece_sprite_(player==Player::light ?
-                       ge211::Image_sprite("./Resources/white-knight.png") :
-                       ge211::Image_sprite("./Resources/dark-knight.png"))
+                       ge211::Image_sprite("./Resources/white-rook.png") :
+                       ge211::Image_sprite("./Resources/dark-rook.png"))
 {
     // // this will initialize value in available_moves
     // calculate_moves(pos);
@@ -172,8 +172,8 @@ Queen::Queen(Player player, Position pos)
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
          piece_sprite_(player==Player::light ?
-                       ge211::Image_sprite("./Resources/white-knight.png") :
-                       ge211::Image_sprite("./Resources/dark-knight.png"))
+                       ge211::Image_sprite("./Resources/white-queen.png") :
+                       ge211::Image_sprite("./Resources/dark-queen.png"))
 {
     // // this will initialize value in available_moves
     // calculate_moves(pos);
@@ -194,8 +194,8 @@ King::King(Player player, Position pos)
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
          piece_sprite_(player==Player::light ?
-                       ge211::Image_sprite("./Resources/white-knight.png") :
-                       ge211::Image_sprite("./Resources/dark-knight.png"))
+                       ge211::Image_sprite("./Resources/white-king.png") :
+                       ge211::Image_sprite("./Resources/dark-king.png"))
 {
     // // this will initialize value in available_moves
     // calculate_moves(pos);
