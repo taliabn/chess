@@ -60,16 +60,22 @@ public:
     Piece operator[](Position) const;
 
 
-    // move piece at position src to position dst
-    void play_move(Position src, Position dst);
+    // Move highlighted piece to position dst
+    void play_move(Position dst);
 
     // check if turn's player has a king
     bool check_king();
+
+    // Highlight viable squares for moves from given position
+    Position_set highlight_move(Position pos);
 
 private:
     Player turn_   = Player::light;
     Player winner_ = Player::neither;
     Board board_;
+    Position_set highlighted_moves_;
+
+    Position highlighted_square_;
 
     bool piece_clicked_ = false;
 };

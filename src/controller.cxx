@@ -1,5 +1,6 @@
 #include "controller.hxx"
 
+
 Controller::Controller()
         : view_(model_)
 { }
@@ -13,7 +14,7 @@ Controller::draw(ge211::Sprite_set& set)
 void
 Controller::on_mouse_down(ge211::Mouse_button m, ge211::Posn<int> position)
 {
-    // TODO
+    model_.play_move(position); // Need to translate into board pos
 }
 
 

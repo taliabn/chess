@@ -125,6 +125,18 @@ Knight::calculate_moves(Position pos, Model const& model) {
     return find_line(pos, move_dims, model, true);
 }
 
+Bishop::Bishop(Player player, Position pos)
+        :Piece(player, pos),
+        // these sprites are just as a test, not necessarily final choice for image
+        // use ternary operator to determine which sprite to use based on player
+         piece_sprite_(player==Player::light ?
+                       ge211::Image_sprite("./Resources/white-knight.png") :
+                       ge211::Image_sprite("./Resources/dark-knight.png"))
+{
+    // // this will initialize value in available_moves
+    // calculate_moves(pos);
+};
+
 Position_set
 Bishop::calculate_moves(Position pos, Model const& model) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
@@ -133,6 +145,18 @@ Bishop::calculate_moves(Position pos, Model const& model) {
 
     return find_line(pos, move_dims, model, false);
 }
+
+Rook::Rook(Player player, Position pos)
+        :Piece(player, pos),
+        // these sprites are just as a test, not necessarily final choice for image
+        // use ternary operator to determine which sprite to use based on player
+         piece_sprite_(player==Player::light ?
+                       ge211::Image_sprite("./Resources/white-knight.png") :
+                       ge211::Image_sprite("./Resources/dark-knight.png"))
+{
+    // // this will initialize value in available_moves
+    // calculate_moves(pos);
+};
 
 Position_set
 Rook::calculate_moves(Position pos, Model const& model) {
@@ -143,6 +167,18 @@ Rook::calculate_moves(Position pos, Model const& model) {
     return find_line(pos, move_dims, model, false);
 }
 
+Queen::Queen(Player player, Position pos)
+        :Piece(player, pos),
+        // these sprites are just as a test, not necessarily final choice for image
+        // use ternary operator to determine which sprite to use based on player
+         piece_sprite_(player==Player::light ?
+                       ge211::Image_sprite("./Resources/white-knight.png") :
+                       ge211::Image_sprite("./Resources/dark-knight.png"))
+{
+    // // this will initialize value in available_moves
+    // calculate_moves(pos);
+};
+
 Position_set
 Queen::calculate_moves(Position pos, Model const& model) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
@@ -152,6 +188,18 @@ Queen::calculate_moves(Position pos, Model const& model) {
 
     return find_line(pos, move_dims, model, false);
 }
+
+King::King(Player player, Position pos)
+        :Piece(player, pos),
+        // these sprites are just as a test, not necessarily final choice for image
+        // use ternary operator to determine which sprite to use based on player
+         piece_sprite_(player==Player::light ?
+                       ge211::Image_sprite("./Resources/white-knight.png") :
+                       ge211::Image_sprite("./Resources/dark-knight.png"))
+{
+    // // this will initialize value in available_moves
+    // calculate_moves(pos);
+};
 
 Position_set
 King::calculate_moves(Position pos, Model const& model) {

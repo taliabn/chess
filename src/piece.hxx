@@ -30,4 +30,58 @@ private:
     Position_set calculate_moves(Position) override;
 
 };
-// TODO: children piece classes
+
+class Knight : public Piece
+{
+public:
+    Knight(Player, Position);
+private:
+    ge211::Image_sprite piece_sprite_;
+    // compute all positions a piece can move to
+    Position_set calculate_moves(Position) override;
+
+};
+
+class Bishop : public Piece
+{
+public:
+    Bishop(Player, Position);
+private:
+    ge211::Image_sprite piece_sprite_;
+    // compute all positions a piece can move to
+    Position_set calculate_moves(Position) override;
+
+};
+
+class Rook : public Piece
+{
+public:
+    Rook(Player, Position);
+private:
+    ge211::Image_sprite piece_sprite_;
+    // compute all positions a piece can move to
+    Position_set calculate_moves(Position) override;
+
+};
+
+class Queen : public Piece
+{
+public:
+    Queen(Player, Position);
+private:
+    ge211::Image_sprite piece_sprite_;
+    // compute all positions a piece can move to
+    Position_set calculate_moves(Position) override;
+
+};
+
+class King : public Piece
+{
+public:
+    King(Player, Position);
+private:
+    ge211::Image_sprite piece_sprite_;
+    // compute all positions a piece can move to
+    Position_set calculate_moves(Position) override;
+
+};
