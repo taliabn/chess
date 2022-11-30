@@ -111,6 +111,11 @@ Pawn::calculate_moves(Position pos, Piece (&squares)[8][8]) {
     return pset;
 }
 
+void
+Pawn::update_first_move() {
+    first_move_ = false;
+}
+
 
 Knight::Knight(Player player, Position pos, Piece (&squares)[8][8])
         :Piece(player, pos, squares)

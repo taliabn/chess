@@ -68,6 +68,11 @@ Model::play_move(Position dst)
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
+    const char *pawn = "4Pawn";
+    if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
+        piece_at_(dst).update_first_move();
+    }
+
     if (!check_king_()) {
         // game is now over
         turn_ = Player::neither;

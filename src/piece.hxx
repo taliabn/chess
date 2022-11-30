@@ -43,6 +43,7 @@ class Pawn : public Piece
 {
 public:
     Pawn(Player player, Position pos, Piece (&squares)[8][8]);
+    void update_first_move();
 private:
     // ge211::Image_sprite piece_sprite_;
     bool first_move_; // has this pawn made its first move yet
