@@ -81,6 +81,18 @@ Model::play_move(Position dst)
     }
 }
 
+void
+Model::check_pos(Position pos)
+{
+    if (is_game_over()) {return;}
+    // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
+    if (piece_clicked_ &&
+            squares_[square_clicked_].allowable_moves()[pos]){
+        play_move(pos);
+    } else if(squares_[pos].player() == turn_){
+        on_first_click(pos);
+    }
+}
 
 bool Model::check_king_()
 {
