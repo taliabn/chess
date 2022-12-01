@@ -27,8 +27,8 @@ void Model::setup_pieces(){
     for (int j = 0; j < 8; j++) {
         // Piece p = Piece(); // this works
         // this does not work
-        set_piece_(Pawn(Player::light, Position(1,j), squares_), {0,j});
-        set_piece_(Pawn(Player::dark, Position (6,j), squares_), {7, j});
+        set_piece_(Pawn(Player::light, Position(1,j), squares_), {1,j});
+        set_piece_(Pawn(Player::dark, Position (6,j), squares_), {6, j});
     }
 
     for (int j = 0; j < 8; j = j + 7) {
@@ -68,10 +68,10 @@ Model::play_move(Position dst)
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
-    const char *pawn = "4Pawn";
-    if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
-        piece_at_(dst).update_first_move();
-    }
+    // const char *pawn = "4Pawn";
+    // if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
+    //     piece_at_(dst).update_first_move();
+    // }
 
     if (!check_king_()) {
         // game is now over
@@ -98,7 +98,7 @@ bool Model::check_king_()
 
 void
 Model::set_piece_(Piece piece, Position pos) {
-    squares_[pos.x][pos.y] = piece;
+    squares_[pos.y][pos.x] = piece;
 }
 
 
