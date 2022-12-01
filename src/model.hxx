@@ -47,7 +47,7 @@ public:
 
     // Returns the piece at the given position
     // this gets used by the controller
-    Piece operator[](Position) const;
+    Player operator[](Position) const;
 
     // selects a piece
         // unchecked precondition: piece can be moved
@@ -67,12 +67,12 @@ public:
     // move a piece
     void check_pos(Position pos);
 
-    const char* piece_type_at(Position pos);
+    const char* piece_type_at(Position pos) const;
     // Returns a rectangle containing all the positions of the board. This
     // can be used to iterate over the positions:
     Rectangle all_positions() const;
-    int pos_to_idx(Position pos);
-    Position idx_to_pos(int idx);
+    int pos_to_idx(Position pos) const;
+    Position idx_to_pos(int idx) const;
 
 private:
     Player turn_   = Player::light;

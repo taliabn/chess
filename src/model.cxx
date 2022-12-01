@@ -27,11 +27,11 @@ Model::board() const
     return all_positions();
 }
 
-int Model::pos_to_idx(Position pos) {
+int Model::pos_to_idx(Position pos) const {
     return 8*pos.x + pos.y;
 }
 
-ge211::Posn<int> Model::idx_to_pos(int idx) {
+ge211::Posn<int> Model::idx_to_pos(int idx) const {
     // return Position(2,2);
     auto x = int(idx / 8);
     auto y = int(idx % 8);
@@ -44,7 +44,6 @@ void Model::setup_pieces_new(){
     // square_vec[4] = (std::make_unique<Pawn>(Player::dark, Position(4,4),
     //                                         squares_));
     // square_vec[4]->set_moves(Position(0,0), squares_);
-    Position_set x = square_vec[4]->calculate_moves(Position(0,0), squares_);
     for (int j = 0; j < 8; j++) {
         // Piece p = Piece(); // this works
         // this does not work
@@ -125,7 +124,7 @@ Model::on_first_click(Position pos){
 
 
 const char*
-Model::piece_type_at(Position pos) {
+Model::piece_type_at(Position pos) const {
     return square_vec[pos_to_idx(pos)]->get_piece_type();
 }
 
@@ -137,7 +136,8 @@ Model::play_move(Position dst)
     // square_vec[pos_to_idx(dst)]=;
     // square_vec[pos_to_idx({1,j})]=std::make_unique<Pawn>(Pawn(Player::dark,Position(1,j), squares_));
     //
-    swap(square_vec[pos_to_idx(square_clicked_)], square_vec[pos_to_idx(dst)]);
+/*    swap(square_vec[pos_to_idx(square_clicked_)], square_vec[pos_to_idx
+ * (dst)]);
     square_vec[pos_to_idx(square_clicked_)]=std::make_unique<Piece>();
     set_piece_(piece_at_(square_clicked_), dst);
     set_piece_(Piece(), square_clicked_);
@@ -154,7 +154,7 @@ Model::play_move(Position dst)
         turn_ = Player::neither;
     } else {
         turn_ = other_player(turn_);
-    }
+    }*/
 }
 
 void
@@ -172,10 +172,9 @@ Model::check_pos(Position pos)
 
 bool Model::check_king_()
 {
-    const char *king = "4King";
     for (auto pos: board()) {
         // first condition checks if piece is of type King
-        if ((strcmp(typeid(piece_at_(pos)).name(), king) == 0) &&
+        if ((strcmp(piece_type_at(pos), "King") == 0) &&
         piece_at_(pos).player() == other_player(turn_) ){
             return true;
         }
@@ -198,10 +197,10 @@ Model::piece_at_(ge211::Posn<int> pos)
 }
 
 
-Piece
+Player
 Model::operator[](Position pos) const
 {
-    return squares_[pos.x][pos.y];
+    return square_vec[pos_to_idx(pos)]->player();
 }
 
 

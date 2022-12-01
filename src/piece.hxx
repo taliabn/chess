@@ -32,7 +32,7 @@ public:
     {return piece_type; }
 
 protected:
-    const char* piece_type = "asdf";
+    const char* piece_type = "Pawn";
     Player player_;
     Position_set allowable_moves_; // all positions piece can move to
     Position_set find_line(
@@ -50,8 +50,8 @@ public:
     Pawn(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
 private:
+    const char* piece_type = "Pawn";
 
-    // ge211::Image_sprite piece_sprite_;
 };
 
 
@@ -61,7 +61,7 @@ public:
     Knight(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
 private:
-    // ge211::Image_sprite piece_sprite_;
+    const char* piece_type = "Knight";
 };
 
 
@@ -71,7 +71,7 @@ public:
     Bishop(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
 private:
-    // ge211::Image_sprite piece_sprite_;
+    const char* piece_type = "Bishop";
 };
 
 
@@ -81,7 +81,7 @@ public:
     Rook(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
 private:
-    // ge211::Image_sprite piece_sprite_;
+    const char* piece_type = "Rook";
 };
 
 
@@ -91,7 +91,7 @@ public:
     Queen(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
 private:
-    // ge211::Image_sprite piece_sprite_;
+    const char* piece_type = "Queen";
 };
 
 
@@ -101,5 +101,5 @@ public:
     King(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
 private:
-    // ge211::Image_sprite piece_sprite_;
+    const char* piece_type = "King";
 };

@@ -66,11 +66,6 @@ Piece::find_line(Position pos, std::vector<ge211::geometry::Dims<int>> dims,
 
 Pawn::Pawn(Player player, Position pos, Piece (&squares)[8][8])
         :Piece(player, pos, squares)
-        // these sprites are just as a test, not necessarily final choice for image
-        // use ternary operator to determine which sprite to use based on player
-        //  piece_sprite_(player==Player::light ?
-        //                ge211::Image_sprite("./Resources/white-pawn.png") :
-        //                ge211::Image_sprite("./Resources/dark-pawn.png")),
 {}
 
 Position_set
