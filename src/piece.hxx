@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ge211.hxx>
+// #include <ge211.hxx>
 #include "player.hxx"
 #include "position_set.hxx"
 
@@ -27,7 +27,6 @@ public:
     { return allowable_moves_; }
     // Returns whether the given position is in bounds.
     bool good_position(ge211::Posn<int>);
-
 protected:
     Player player_;
     Position_set allowable_moves_; // all positions piece can move to
@@ -37,6 +36,7 @@ protected:
     // returns piece located at given square on board
         // this is used internally within Piece
     Piece piece_at_(ge211::Posn<int> pos, Piece (&squares)[8][8]);
+
 };
 
 class Pawn : public Piece
@@ -44,6 +44,7 @@ class Pawn : public Piece
 public:
     Pawn(Player player, Position pos, Piece (&squares)[8][8]);
     void update_first_move();
+
 private:
     // ge211::Image_sprite piece_sprite_;
     bool first_move_; // has this pawn made its first move yet

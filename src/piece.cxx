@@ -1,13 +1,13 @@
 #include "piece.hxx"
 
-using namespace ge211;
+// using namespace ge211;
 
 Piece::Piece()
-: player_(Player::neither)
+        :player_(Player::neither)
 {}
 
 Piece::Piece(Player player, Position pos, Piece (&squares)[8][8])
-        : player_(player)
+        :player_(player)
 {
     set_moves(pos, squares);
 }
@@ -69,8 +69,8 @@ Pawn::Pawn(Player player, Position pos, Piece (&squares)[8][8])
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
         //  piece_sprite_(player==Player::light ?
-        //                ge211::Image_sprite("./Resources/white-pawn.png") :
-        //                ge211::Image_sprite("./Resources/dark-pawn.png")),
+        //                ge211::Image_sprite{"white-pawn.png"}:
+        //                ge211::Image_sprite{"black-pawn.png"}),
          first_move_(true)
 {}
 

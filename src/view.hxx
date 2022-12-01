@@ -39,4 +39,7 @@ private:
     Model const& model_;
     ge211::Rectangle_sprite const dark_square_sprite;
     ge211::Rectangle_sprite const light_square_sprite;
+    ge211::Image_sprite const piece_sprite{"white-pawn.png"};
+    // draws sprite associated with given piece
+    void draw_piece_sprite(Position pos, ge211::Sprite_set& set);
 };
