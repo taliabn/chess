@@ -65,7 +65,7 @@ public:
 
     // Check the position to determine whether to set highlighted square vs.
     // move a piece
-    void Model::check_pos(Position pos);
+    void check_pos(Position pos);
 
     // Returns a rectangle containing all the positions of the board. This
     // can be used to iterate over the positions:
