@@ -28,11 +28,11 @@ public:
     { return allowable_moves_; }
     // Returns whether the given position is in bounds.
     bool good_position(ge211::Posn<int>);
-    const char* get_piece_type()
+    virtual const char* get_piece_type()
     {return piece_type; }
 
 protected:
-    const char* piece_type = "Pawn";
+    const char* piece_type = "asdfaweof";
     Player player_;
     Position_set allowable_moves_; // all positions piece can move to
     Position_set find_line(
@@ -49,6 +49,8 @@ public:
     int test = 4;
     Pawn(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    const char* get_piece_type() override
+    {return piece_type; }
 private:
     const char* piece_type = "Pawn";
 
@@ -60,6 +62,8 @@ class Knight : public Piece
 public:
     Knight(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    const char* get_piece_type() override
+    {return piece_type; }
 private:
     const char* piece_type = "Knight";
 };
@@ -70,6 +74,8 @@ class Bishop : public Piece
 public:
     Bishop(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    const char* get_piece_type() override
+    {return piece_type; }
 private:
     const char* piece_type = "Bishop";
 };
@@ -80,6 +86,8 @@ class Rook : public Piece
 public:
     Rook(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    const char* get_piece_type() override
+    {return piece_type; }
 private:
     const char* piece_type = "Rook";
 };
@@ -90,6 +98,8 @@ class Queen : public Piece
 public:
     Queen(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    const char* get_piece_type() override
+    {return piece_type; }
 private:
     const char* piece_type = "Queen";
 };
@@ -100,6 +110,8 @@ class King : public Piece
 public:
     King(Player player, Position pos, Piece (&squares)[8][8]);
     Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    const char* get_piece_type() override
+    {return piece_type; }
 private:
     const char* piece_type = "King";
 };

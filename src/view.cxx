@@ -37,12 +37,14 @@ View::draw(ge211::Sprite_set& set)
             //  ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
             //                set.add_sprite(light_knight_sprite, pos, 1):
             //                ge211::Image_sprite{"dark_pawn.png"});
-            set.add_sprite(light_pawn_sprite, board_to_screen(pos), 1);
+            set.add_sprite(light_pawn_sprite, board_to_screen(pos), 1,
+                           ge211::Transform::scale(0.4));
         } else if (strcmp(piece_type, "Knight") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
             //               ge211::Image_sprite{"light_knight.png"} :
             //               ge211::Image_sprite{"dark_knight.png"});
-            set.add_sprite(dark_knight_sprite, board_to_screen(pos), 1);
+            set.add_sprite(dark_knight_sprite, board_to_screen(pos), 1,
+                           ge211::Transform::scale(0.4));
 		}
         // } else if (strcmp(piece_type, "Bishop") == 0) {
         //     ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
