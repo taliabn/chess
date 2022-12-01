@@ -68,10 +68,10 @@ Model::play_move(Position dst)
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
-    const char *pawn = "4Pawn";
-    if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
-        piece_at_(dst).update_first_move();
-    }
+    // const char *pawn = "4Pawn";
+    // if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
+    //     piece_at_(dst).update_first_move();
+    // }
 
     if (!check_king_()) {
         // game is now over
@@ -87,9 +87,9 @@ Model::check_pos(Position pos)
     if (is_game_over()) {return;}
     // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
     if (piece_clicked_ &&
-            squares_[square_clicked_].allowable_moves()[pos]){
+            piece_at_(square_clicked_).allowable_moves()[pos]){
         play_move(pos);
-    } else if(squares_[pos].player() == turn_){
+    } else if(piece_at_(pos).player() == turn_){
         on_first_click(pos);
     }
 }
@@ -110,7 +110,7 @@ bool Model::check_king_()
 
 void
 Model::set_piece_(Piece piece, Position pos) {
-    squares_[pos.x][pos.y] = piece;
+    squares_[pos.y][pos.x] = piece;
 }
 
 
