@@ -27,22 +27,22 @@ void Model::setup_pieces(){
     for (int j = 0; j < 8; j++) {
         // Piece p = Piece(); // this works
         // this does not work
-        set_piece_(Pawn(Player::light, Position(1,j), squares_), {0,j});
-        set_piece_(Pawn(Player::dark, Position (6,j), squares_), {7, j});
+        set_piece_(Pawn(Player::dark, Position(1,j), squares_), {1,j});
+        set_piece_(Pawn(Player::light, Position (6,j), squares_), {6, j});
     }
 
     for (int j = 0; j < 8; j = j + 7) {
-        set_piece_(Rook(Player::light, Position(0,j), squares_), {0,j});
-        set_piece_(Rook(Player::dark, Position(7,j), squares_), {7,j});
+        set_piece_(Rook(Player::dark, Position(0,j), squares_), {0,j});
+        set_piece_(Rook(Player::light, Position(7,j), squares_), {7,j});
     }
 
     for (int j = 1; j < 8; j = j + 5) {
-       set_piece_(Knight(Player::light, Position(0,j), squares_), {0,j});
-       set_piece_(Knight(Player::dark, Position(7,j), squares_), {7,j});
+       set_piece_(Knight(Player::dark, Position(0,j), squares_), {0,j});
+       set_piece_(Knight(Player::light, Position(7,j), squares_), {7,j});
     }
     for (int j = 2; j < 8; j = j + 3) {
-        set_piece_(Bishop(Player::light, Position(0,j), squares_), {0,j});
-        set_piece_(Bishop(Player::dark, Position(7,j), squares_), {7,j});
+        set_piece_(Bishop(Player::dark, Position(0,j), squares_), {0,j});
+        set_piece_(Bishop(Player::light, Position(7,j), squares_), {7,j});
     }
 
     set_piece_(Queen(Player::dark, Position(0,3), squares_), {0,3});
@@ -68,10 +68,10 @@ Model::play_move(Position dst)
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
-    const char *pawn = "4Pawn";
-    if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
-        piece_at_(dst).update_first_move();
-    }
+    // const char *pawn = "4Pawn";
+    // if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
+    //     piece_at_(dst).update_first_move();
+    // }
 
     if (!check_king_()) {
         // game is now over
@@ -87,9 +87,9 @@ Model::check_pos(Position pos)
     if (is_game_over()) {return;}
     // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
     if (piece_clicked_ &&
-            squares_[square_clicked_].allowable_moves()[pos]){
+            piece_at_(square_clicked_).allowable_moves()[pos]){
         play_move(pos);
-    } else if(squares_[pos].player() == turn_){
+    } else if(piece_at_(pos).player() == turn_){
         on_first_click(pos);
     }
 }
@@ -110,7 +110,7 @@ bool Model::check_king_()
 
 void
 Model::set_piece_(Piece piece, Position pos) {
-    squares_[pos.x][pos.y] = piece;
+    squares_[pos.y][pos.x] = piece;
 }
 
 
