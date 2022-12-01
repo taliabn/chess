@@ -39,4 +39,9 @@ private:
     Model const& model_;
     ge211::Rectangle_sprite const dark_square_sprite;
     ge211::Rectangle_sprite const light_square_sprite;
+	ge211::Image_sprite light_pawn_sprite{"light_pawn.png"};
+    ge211::Image_sprite dark_pawn_sprite{"dark_pawn.png"};
+	ge211::Image_sprite light_knight_sprite{"light_knight.png"};
+	ge211::Image_sprite dark_knight_sprite{"dark_knight.png"};
+	
 };
