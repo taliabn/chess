@@ -27,22 +27,22 @@ void Model::setup_pieces(){
     for (int j = 0; j < 8; j++) {
         // Piece p = Piece(); // this works
         // this does not work
-        set_piece_(Pawn(Player::light, Position(1,j), squares_), {0,j});
-        set_piece_(Pawn(Player::dark, Position (6,j), squares_), {7, j});
+        set_piece_(Pawn(Player::dark, Position(1,j), squares_), {1,j});
+        set_piece_(Pawn(Player::light, Position (6,j), squares_), {6, j});
     }
 
     for (int j = 0; j < 8; j = j + 7) {
-        set_piece_(Rook(Player::light, Position(0,j), squares_), {0,j});
-        set_piece_(Rook(Player::dark, Position(7,j), squares_), {7,j});
+        set_piece_(Rook(Player::dark, Position(0,j), squares_), {0,j});
+        set_piece_(Rook(Player::light, Position(7,j), squares_), {7,j});
     }
 
     for (int j = 1; j < 8; j = j + 5) {
-       set_piece_(Knight(Player::light, Position(0,j), squares_), {0,j});
-       set_piece_(Knight(Player::dark, Position(7,j), squares_), {7,j});
+       set_piece_(Knight(Player::dark, Position(0,j), squares_), {0,j});
+       set_piece_(Knight(Player::light, Position(7,j), squares_), {7,j});
     }
     for (int j = 2; j < 8; j = j + 3) {
-        set_piece_(Bishop(Player::light, Position(0,j), squares_), {0,j});
-        set_piece_(Bishop(Player::dark, Position(7,j), squares_), {7,j});
+        set_piece_(Bishop(Player::dark, Position(0,j), squares_), {0,j});
+        set_piece_(Bishop(Player::light, Position(7,j), squares_), {7,j});
     }
 
     set_piece_(Queen(Player::dark, Position(0,3), squares_), {0,3});
