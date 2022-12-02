@@ -39,7 +39,7 @@ View::draw(ge211::Sprite_set& set)
             //                ge211::Image_sprite{"dark_pawn.png"});
             if (model_[pos] == Player::light) {
                 set.add_sprite(light_pawn_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             } else {
                 set.add_sprite(dark_pawn_sprite, board_to_screen(pos), 1,
                                ge211::Transform::scale(0.4));
@@ -50,10 +50,10 @@ View::draw(ge211::Sprite_set& set)
             //               ge211::Image_sprite{"dark_knight.png"});
             if (model_[pos] == Player::light) {
                 set.add_sprite(light_knight_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             } else {
                 set.add_sprite(dark_knight_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.12));
             }
         } else if (strcmp(piece_type, "Bishop") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
@@ -64,7 +64,7 @@ View::draw(ge211::Sprite_set& set)
                                ge211::Transform::scale(0.4));
             } else {
                 set.add_sprite(dark_bishop_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             }
         } else if (strcmp(piece_type, "Rook") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
@@ -72,10 +72,10 @@ View::draw(ge211::Sprite_set& set)
             //               ge211::Image_sprite{"dark_knight.png"});
             if (model_[pos] == Player::light) {
                 set.add_sprite(light_rook_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             } else {
                 set.add_sprite(dark_rook_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             }
         } else if (strcmp(piece_type, "Queen") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
@@ -83,10 +83,10 @@ View::draw(ge211::Sprite_set& set)
             //               ge211::Image_sprite{"dark_knight.png"});
             if (model_[pos] == Player::light) {
                 set.add_sprite(light_queen_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.1));
             } else {
                 set.add_sprite(dark_queen_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.1));
             }
         } else if (strcmp(piece_type, "King") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
@@ -94,10 +94,10 @@ View::draw(ge211::Sprite_set& set)
             //               ge211::Image_sprite{"dark_knight.png"});
             if (model_[pos] == Player::light) {
                 set.add_sprite(light_king_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             } else {
                 set.add_sprite(dark_king_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             }
         }
         // } else if (strcmp(piece_type, "Bishop") == 0) {
