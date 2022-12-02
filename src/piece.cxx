@@ -71,9 +71,9 @@ Pawn::Pawn(Player player, Position pos, Piece (&squares)[8][8])
 Position_set
 Pawn::calculate_moves(Position pos, Piece (&squares)[8][8]) {
     Position_set pset = {};
-    int move_direction = 1;
+    int move_direction = -1;
     if(player_ == Player::dark) {
-        move_direction = -1;
+        move_direction = 1;
     }
 
     bool first_move = (player_ == Player::light && pos.y == 1) || (player_ ==

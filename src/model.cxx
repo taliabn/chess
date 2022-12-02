@@ -49,39 +49,39 @@ void Model::setup_pieces_new(){
         // this does not work
         // squares_[4][4] = p;
 
-        square_vec[pos_to_idx({1,j})]=std::make_unique<Pawn>(Pawn
-                (Player::dark,Position(1,j), squares_));
-        square_vec[pos_to_idx({6,j})]=std::make_unique<Pawn>(Pawn
-                (Player::light,Position(6,j), squares_));
+        square_vec[pos_to_idx({j,1})]=std::make_unique<Pawn>(Pawn
+                (Player::dark,Position(j,1), squares_));
+        square_vec[pos_to_idx({j,6})]=std::make_unique<Pawn>(Pawn
+                (Player::light,Position(j,6), squares_));
     }
     for (int j = 0; j < 8; j = j + 7) {
-        square_vec[pos_to_idx({0,j})]=std::make_unique<Rook>(
-                Rook(Player::dark, Position(0,j), squares_));
-        square_vec[pos_to_idx({7,j})]=std::make_unique<Rook>(Rook
-                (Player::light, Position(7,j), squares_));
+        square_vec[pos_to_idx({j,0})]=std::make_unique<Rook>(
+                Rook(Player::dark, Position(j,0), squares_));
+        square_vec[pos_to_idx({j,7})]=std::make_unique<Rook>(Rook
+                (Player::light, Position(j,7), squares_));
     }
 
     for (int j = 1; j < 8; j = j + 5) {
-        square_vec[pos_to_idx({0,j})]=std::make_unique<Knight>(Knight
-                (Player::dark, Position(0,j), squares_));
-        square_vec[pos_to_idx({7,j})]=std::make_unique<Knight>(Knight
-                (Player::light, Position(7,j), squares_));
+        square_vec[pos_to_idx({j,0})]=std::make_unique<Knight>(Knight
+                (Player::dark, Position(j,0), squares_));
+        square_vec[pos_to_idx({j,7})]=std::make_unique<Knight>(Knight
+                (Player::light, Position(j,7), squares_));
     }
     for (int j = 2; j < 8; j = j + 3) {
-        square_vec[pos_to_idx({0,j})]=std::make_unique<Bishop>(Bishop
-                (Player::dark, Position(0,j), squares_));
-        square_vec[pos_to_idx({7,j})]=std::make_unique<Bishop>(Bishop
-                (Player::light, Position(7,j), squares_));
+        square_vec[pos_to_idx({j,0})]=std::make_unique<Bishop>(Bishop
+                (Player::dark, Position(j,0), squares_));
+        square_vec[pos_to_idx({j,7})]=std::make_unique<Bishop>(Bishop
+                (Player::light, Position(j,7), squares_));
     }
 
-    square_vec[pos_to_idx({0,3})]=std::make_unique<Queen>(Queen(Player::dark,
-                                                              Position(0,3), squares_));
-    square_vec[pos_to_idx({0,4})]=std::make_unique<King>(King(Player::dark,
-                                                           Position(0,4), squares_));
-    square_vec[pos_to_idx({7,3})]=std::make_unique<Queen>(Queen(Player::light,
-                                                              Position(7,3), squares_));
-    square_vec[pos_to_idx({7,4})]=std::make_unique<King>(King(Player::light,
-                                                            Position(7,4), squares_));
+    square_vec[pos_to_idx({3,0})]=std::make_unique<Queen>(Queen(Player::dark,
+                                            Position(3,0),squares_));
+    square_vec[pos_to_idx({4,0})]=std::make_unique<King>(King(Player::dark,
+                                            Position(4,0),squares_));
+    square_vec[pos_to_idx({3,7})]=std::make_unique<Queen>(Queen(Player::light,
+                                            Position(3,7),squares_));
+    square_vec[pos_to_idx({4,7})]=std::make_unique<King>(King(Player::light,
+                                            Position(4,7),squares_));
 }
 
 void Model::setup_pieces(){
@@ -136,8 +136,7 @@ Model::play_move(Position dst)
     // square_vec[pos_to_idx(dst)]=;
     // square_vec[pos_to_idx({1,j})]=std::make_unique<Pawn>(Pawn(Player::dark,Position(1,j), squares_));
     //
-/*    swap(square_vec[pos_to_idx(square_clicked_)], square_vec[pos_to_idx
- * (dst)]);
+    swap(square_vec[pos_to_idx(square_clicked_)], square_vec[pos_to_idx(dst)]);
     square_vec[pos_to_idx(square_clicked_)]=std::make_unique<Piece>();
     set_piece_(piece_at_(square_clicked_), dst);
     set_piece_(Piece(), square_clicked_);
@@ -154,7 +153,7 @@ Model::play_move(Position dst)
         turn_ = Player::neither;
     } else {
         turn_ = other_player(turn_);
-    }*/
+    }
 }
 
 void
@@ -193,7 +192,7 @@ Piece
 Model::piece_at_(ge211::Posn<int> pos)
 {
     // return square_vec[pos.x + pos.y];
-    return squares_[pos.x][pos.y];
+    return *square_vec[pos_to_idx(pos)];
 }
 
 
