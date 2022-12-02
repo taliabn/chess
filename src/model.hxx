@@ -96,6 +96,11 @@ private:
     Piece piece_at_(ge211::Posn<int>);
     // check if other player has a king
     bool check_king_();
+
+    // If a player doesn't have any possible moves, set the winner to the
+    // other player and end the game
+    void player_has_moves();
+
     // Sets given position on board to hold the given piece
     void set_piece_(Piece piece, Position pos);
     void setup_pieces_new();

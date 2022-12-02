@@ -144,16 +144,32 @@ Model::play_move(Position dst)
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
-    // const char *pawn = "4Pawn";
-    // if ((strcmp(typeid(piece_at_(dst)).name(), pawn) == 0)) {
-    //     piece_at_(dst).update_first_move();
-    // }
-
     if (!check_king_()) {
         // game is now over
         turn_ = Player::neither;
+        return;
     } else {
         turn_ = other_player(turn_);
+    }
+
+    player_has_moves();
+}
+
+void
+Model::player_has_moves() {
+    bool has_moves = false;
+    for (auto pos : board()) {
+        square_vec[pos_to_idx(pos)]->set_moves(pos, square_vec);
+        if (piece_at_(pos).player() == turn_ &&
+                !piece_at_(pos).allowable_moves().empty()) {
+            has_moves = true;
+            break;
+        }
+    }
+
+    if (!has_moves) {
+        winner_ = other_player(turn_);
+        turn_ = Player::neither;
     }
 }
 
