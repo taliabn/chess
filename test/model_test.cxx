@@ -16,18 +16,10 @@ struct Test_access
 
     // Returns the piece at a board position
     Piece get_piece_at(Model::Position pos);
-
-    // REVERSI COPY PASTA:
-    // // Sets the player at `posn` to `player`.
-    // void set_player(Model::Position posn, Player player);
-    // // Gives direct access to `model.next_moves_` so our tests can modify it:
-    // Move_map& next_moves();
-    // // gives direct access to 'model.board'
-    // Board& board();
-    // // gives access to find_flips
-    // Position_set find_flips(Model::Position p, Model::Dimensions d);
-    // void
-    // compute_next_moves();
+    // change piece_clicked
+    void set_piece_clicked(bool is_true);
+    // change square_clicked
+    void set_square_clicked(Model::Position pos);
     // gives access to check_king_
     bool check_king_();
     // gives access to player_has_moves
@@ -41,41 +33,10 @@ struct Test_access
 ///
 
 
-
 Test_access::Test_access(Model& model)
         : model(model)
 { }
 
-// REVERSI COPY PASTA:
-// void
-// Test_access::set_player(Model::Position posn, Player player)
-// {
-//     model.board_[posn] = player;
-// }
-//
-// Move_map&
-// Test_access::next_moves()
-// {
-//     return model.next_moves_;
-// }
-//
-// void
-// Test_access::compute_next_moves()
-// {
-//     model.compute_next_moves_();
-// }
-// Board&
-// Test_access::board()
-// {
-//     return model.board_ ;
-// }
-//
-// Position_set
-// Test_access::find_flips ( Model :: Position p ,
-//                           Model :: Dimensions d )
-// {
-//     return model . find_flips_ (p , d );
-// }
 bool Test_access::check_king_() {
     return model.check_king_();
 }
@@ -88,6 +49,14 @@ void Test_access::set_piece(Piece piece, Model::Position pos){
     model.set_piece_(piece, pos);
 }
 
+void Test_access::set_piece_clicked(bool is_true){
+    model.piece_clicked_ = is_true;
+}
+
+void Test_access::set_square_clicked(Model::Position pos)
+{
+    model.square_clicked_ = pos;
+}
 
 bool
 Test_access::get_piece_clicked()
@@ -130,7 +99,13 @@ TEST_CASE("game over checkmate")
     // can only play a move when a piece has been selected
 TEST_CASE("when can player move")
 {
-    CHECK(1 + 1 == 2);
+    // setup
+    Model m = Model();
+    Test_access access(m);
+
+    // make sure dark cannot move
+    CHECK(access.model.turn() == Player::light);
+    // try to move one of dark's pieces
 }
 
 // TEST CASE 4: a move captures an opponent's piece
