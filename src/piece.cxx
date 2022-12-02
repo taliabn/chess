@@ -1,21 +1,22 @@
 #include "piece.hxx"
 
 using namespace ge211;
+using namespace std;
 
 Piece::Piece()
 : player_(Player::neither)
 {}
 
-Piece::Piece(Player player, Position pos, Piece (&squares)[8][8])
+Piece::Piece(Player player, Position pos)
         : player_(player)
 {
-    set_moves(pos, squares);
 }
 
 Piece
-Piece::piece_at_(ge211::Posn<int> pos, Piece (&squares)[8][8])
+Piece::piece_at_(ge211::Posn<int> pos, std::vector<std::unique_ptr<Piece>>
+&square_vec)
 {
-    return squares[pos.x][pos.y];
+    return *square_vec[8*pos.x + pos.y];
 }
 
 bool
@@ -27,35 +28,43 @@ Piece::good_position(ge211::Posn<int> pos)
 
 // This shouldn't ever be called, all children will override calculate_moves
 Position_set
-Piece::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+Piece::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>>
+&square_vec) {
     Position_set pset = {};
     return pset;
 }
 
 void
-Piece::set_moves(Position pos, Piece (&squares)[8][8]){
-    allowable_moves_ = calculate_moves(pos, squares);
+Piece::set_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec){
+    allowable_moves_ = calculate_moves(pos, square_vec);
 }
 
 Position_set
 Piece::find_line(Position pos, std::vector<ge211::geometry::Dims<int>> dims,
-                 Piece (&squares)[8][8], bool no_line) {
+                 std::vector<std::unique_ptr<Piece>> &square_vec, bool
+                 no_line) {
     Position_set pset = {};
 
     for (auto dim: dims) {
         Position advanced_pos = {pos.x + dim.width, pos.y + dim.height};
 
         while (good_position(advanced_pos)) {
-            if (piece_at_(advanced_pos, squares).player() != player_) {
+            if (piece_at_(advanced_pos, square_vec).player() != player_) {
                 pset[advanced_pos] = true;
+            } else {
+                break;
             }
 
-            if (piece_at_(advanced_pos, squares).player() == other_player
+            if (piece_at_(advanced_pos, square_vec).player() == other_player
             (player_) ||
                 no_line) {
                 break;
 
             }
+
+            advanced_pos.x += dim.width;
+            advanced_pos.y += dim.height;
+
         }
     }
 
@@ -64,50 +73,60 @@ Piece::find_line(Position pos, std::vector<ge211::geometry::Dims<int>> dims,
 }
 
 
-Pawn::Pawn(Player player, Position pos, Piece (&squares)[8][8])
-        :Piece(player, pos, squares)
+Pawn::Pawn(Player player, Position pos)
+        :Piece(player, pos)
 {}
 
 Position_set
-Pawn::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+Pawn::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec) {
     Position_set pset = {};
     int move_direction = -1;
     if(player_ == Player::dark) {
         move_direction = 1;
     }
 
-    bool first_move = (player_ == Player::light && pos.y == 1) || (player_ ==
-            Player::dark && pos.y == 6);
-
-    //Add first double move if pawn hasn't moved yet and square is unoccupied
-    if(first_move && piece_at_({pos.x, pos.y + (2 * move_direction)},
-                               squares).player() == Player::neither) {
-        pset[{pos.x, pos.y + (2 * move_direction)}] = true;
-    }
+    bool unblocked_way = true;
 
     //Add advancing moves if pawn hasn't reached the end of the board
     Position advanced_pos = {pos.x, pos.y + move_direction};
-    if((0 <= advanced_pos.y) && (7 >= advanced_pos.y) && piece_at_
-    (advanced_pos, squares).player() == Player::neither) {
+    if(good_position(advanced_pos) && piece_at_
+    (advanced_pos, square_vec).player() == Player::neither) {
         pset[{advanced_pos}] = true;
+    } else {
+        unblocked_way = false;
+    }
+
+    bool first_move = (player_ == Player::light && pos.y == 6) || (player_ ==
+                                                                   Player::dark && pos.y == 1);
+
+    //Add first double move if pawn hasn't moved yet and square is unoccupied
+    if(first_move && unblocked_way && piece_at_({pos.x, pos.y + (2 *
+    move_direction)},square_vec).player() == Player::neither) {
+        pset[{pos.x, pos.y + (2 * move_direction)}] = true;
     }
 
     //Calculate capture moves
-    if(piece_at_({advanced_pos.x - 1, advanced_pos.y}, squares).player() ==
-        other_player(player_)) {
-        pset[{advanced_pos.x - 1, advanced_pos.y}] = true;
+    if (good_position({advanced_pos.x - 1, advanced_pos.y})) {
+        if (piece_at_({advanced_pos.x - 1, advanced_pos.y},
+                      square_vec).player() ==
+            other_player(player_)) {
+            pset[{advanced_pos.x - 1, advanced_pos.y}] = true;
+        }
     }
 
-    if(piece_at_({advanced_pos.x + 1, advanced_pos.y}, squares).player() ==
-        other_player(player_)) {
-        pset[{advanced_pos.x + 1, advanced_pos.y}] = true;
+    if (good_position({advanced_pos.x + 1, advanced_pos.y})) {
+        if (piece_at_({advanced_pos.x + 1, advanced_pos.y},
+                      square_vec).player() ==
+            other_player(player_)) {
+            pset[{advanced_pos.x + 1, advanced_pos.y}] = true;
+        }
     }
 
     return pset;
 }
 
-Knight::Knight(Player player, Position pos, Piece (&squares)[8][8])
-        :Piece(player, pos, squares)
+Knight::Knight(Player player, Position pos)
+        :Piece(player, pos)
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
         //  piece_sprite_(player==Player::light ?
@@ -116,18 +135,18 @@ Knight::Knight(Player player, Position pos, Piece (&squares)[8][8])
 {}
 
 Position_set
-Knight::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+Knight::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
             {1, 2}, {2, 1}, {-1, 2}, {-2, 1}, {1, -2}, {2, -1}, {-1, -2}, {-2,
                         -1}
     };
 
-    return find_line(pos, move_dims, squares, true);
+    return find_line(pos, move_dims, square_vec, true);
 }
 
 
-Bishop::Bishop(Player player, Position pos, Piece (&squares)[8][8])
-        :Piece(player, pos, squares)
+Bishop::Bishop(Player player, Position pos)
+        :Piece(player, pos)
         // these sprites are just as a test, not necessarily final choice for image
         // use ternary operator to determine which sprite to use based on player
         //  piece_sprite_(player==Player::light ?
@@ -136,17 +155,17 @@ Bishop::Bishop(Player player, Position pos, Piece (&squares)[8][8])
 {}
 
 Position_set
-Bishop::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+Bishop::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
             {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
     };
 
-    return find_line(pos, move_dims, squares, false);
+    return find_line(pos, move_dims, square_vec, false);
 }
 
 
-Rook::Rook(Player player, Position pos, Piece (&squares)[8][8])
-        :Piece(player, pos, squares)
+Rook::Rook(Player player, Position pos)
+        :Piece(player, pos)
 // these sprites are just as a test, not necessarily final choice for image
 // use ternary operator to determine which sprite to use based on player
 //  piece_sprite_(player==Player::light ?
@@ -155,17 +174,17 @@ Rook::Rook(Player player, Position pos, Piece (&squares)[8][8])
 {}
 
 Position_set
-Rook::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+Rook::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
             {1, 0}, {-1, 0}, {0, 1}, {0, -1}
     };
 
-    return find_line(pos, move_dims, squares, false);
+    return find_line(pos, move_dims, square_vec, false);
 }
 
 
-Queen::Queen(Player player, Position pos, Piece (&squares)[8][8])
-        :Piece(player, pos, squares)
+Queen::Queen(Player player, Position pos)
+        :Piece(player, pos)
 // these sprites are just as a test, not necessarily final choice for image
 // use ternary operator to determine which sprite to use based on player
 //  piece_sprite_(player==Player::light ?
@@ -174,18 +193,18 @@ Queen::Queen(Player player, Position pos, Piece (&squares)[8][8])
 {}
 
 Position_set
-Queen::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+Queen::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
             {1, 0}, {-1, 0}, {0, 1}, {0, -1},
             {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
     };
 
-    return find_line(pos, move_dims, squares, false);
+    return find_line(pos, move_dims, square_vec, false);
 }
 
 
-King::King(Player player, Position pos, Piece (&squares)[8][8])
-        :Piece(player, pos, squares)
+King::King(Player player, Position pos)
+        :Piece(player, pos)
 // these sprites are just as a test, not necessarily final choice for image
 // use ternary operator to determine which sprite to use based on player
 // piece_sprite_(player==Player::light ?
@@ -194,11 +213,11 @@ King::King(Player player, Position pos, Piece (&squares)[8][8])
 {}
 
 Position_set
-King::calculate_moves(Position pos, Piece (&squares)[8][8]) {
+King::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_vec) {
     std::vector<ge211::geometry::Dims<int>> move_dims = {
             {1, 0}, {-1, 0}, {0, 1}, {0, -1},
             {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
     };
 
-    return find_line(pos, move_dims, squares, true);
+    return find_line(pos, move_dims, square_vec, true);
 }

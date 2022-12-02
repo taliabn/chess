@@ -14,12 +14,14 @@ public:
     // default "dummy" piece (e.g. no player's piece is there)
     Piece();
     // primary constructor that children will call
-    Piece(Player player, Position pos, Piece (&squares)[8][8]);
+    Piece(Player player, Position pos);
 
     // compute all positions piece can move to
-    virtual Position_set calculate_moves(Position, Piece (&squares)[8][8]);
+    virtual Position_set calculate_moves(Position,
+                                         std::vector<std::unique_ptr<Piece>> &square_vec);
     // updates allowable_moves_
-    void set_moves(Position, Piece (&squares)[8][8]);
+    void set_moves(Position, std::vector<std::unique_ptr<Piece>>
+    &square_vec);
     // Returns the player who owns the piece
     Player player() const
     { return player_; }
@@ -37,18 +39,20 @@ protected:
     Position_set allowable_moves_; // all positions piece can move to
     Position_set find_line(
             Position pos, std::vector<ge211::geometry::Dims<int>> dims,
-            Piece (&squares)[8][8], bool no_line);
+            std::vector<std::unique_ptr<Piece>> &square_vec, bool no_line);
     // returns piece located at given square on board
         // this is used internally within Piece
-    Piece piece_at_(ge211::Posn<int> pos, Piece (&squares)[8][8]);
+    Piece piece_at_(ge211::Posn<int> pos, std::vector<std::unique_ptr<Piece>>
+    &square_vec);
 };
 
 class Pawn : public Piece
 {
 public:
     int test = 4;
-    Pawn(Player player, Position pos, Piece (&squares)[8][8]);
-    Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    Pawn(Player player, Position pos);
+    Position_set calculate_moves(Position,
+                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
     const char* get_piece_type() override
     {return piece_type; }
 private:
@@ -60,8 +64,9 @@ private:
 class Knight : public Piece
 {
 public:
-    Knight(Player player, Position pos, Piece (&squares)[8][8]);
-    Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    Knight(Player player, Position pos);
+    Position_set calculate_moves(Position,
+                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
     const char* get_piece_type() override
     {return piece_type; }
 private:
@@ -72,8 +77,9 @@ private:
 class Bishop : public Piece
 {
 public:
-    Bishop(Player player, Position pos, Piece (&squares)[8][8]);
-    Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    Bishop(Player player, Position pos);
+    Position_set calculate_moves(Position,
+                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
     const char* get_piece_type() override
     {return piece_type; }
 private:
@@ -84,8 +90,9 @@ private:
 class Rook : public Piece
 {
 public:
-    Rook(Player player, Position pos, Piece (&squares)[8][8]);
-    Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    Rook(Player player, Position pos);
+    Position_set calculate_moves(Position,
+                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
     const char* get_piece_type() override
     {return piece_type; }
 private:
@@ -96,8 +103,9 @@ private:
 class Queen : public Piece
 {
 public:
-    Queen(Player player, Position pos, Piece (&squares)[8][8]);
-    Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    Queen(Player player, Position pos);
+    Position_set calculate_moves(Position,
+                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
     const char* get_piece_type() override
     {return piece_type; }
 private:
@@ -108,8 +116,9 @@ private:
 class King : public Piece
 {
 public:
-    King(Player player, Position pos, Piece (&squares)[8][8]);
-    Position_set calculate_moves(Position, Piece (&squares)[8][8]) override;
+    King(Player player, Position pos);
+    Position_set calculate_moves(Position,
+                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
     const char* get_piece_type() override
     {return piece_type; }
 private:

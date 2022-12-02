@@ -50,42 +50,42 @@ void Model::setup_pieces_new(){
         // squares_[4][4] = p;
 
         square_vec[pos_to_idx({j,1})]=std::make_unique<Pawn>(Pawn
-                (Player::dark,Position(j,1), squares_));
+                (Player::dark,Position(j,1)));
         square_vec[pos_to_idx({j,6})]=std::make_unique<Pawn>(Pawn
-                (Player::light,Position(j,6), squares_));
+                (Player::light,Position(j,6)));
     }
     for (int j = 0; j < 8; j = j + 7) {
         square_vec[pos_to_idx({j,0})]=std::make_unique<Rook>(
-                Rook(Player::dark, Position(j,0), squares_));
+                Rook(Player::dark, Position(j,0)));
         square_vec[pos_to_idx({j,7})]=std::make_unique<Rook>(Rook
-                (Player::light, Position(j,7), squares_));
+                (Player::light, Position(j,7)));
     }
 
     for (int j = 1; j < 8; j = j + 5) {
         square_vec[pos_to_idx({j,0})]=std::make_unique<Knight>(Knight
-                (Player::dark, Position(j,0), squares_));
+                (Player::dark, Position(j,0)));
         square_vec[pos_to_idx({j,7})]=std::make_unique<Knight>(Knight
-                (Player::light, Position(j,7), squares_));
+                (Player::light, Position(j,7)));
     }
     for (int j = 2; j < 8; j = j + 3) {
         square_vec[pos_to_idx({j,0})]=std::make_unique<Bishop>(Bishop
-                (Player::dark, Position(j,0), squares_));
+                (Player::dark, Position(j,0)));
         square_vec[pos_to_idx({j,7})]=std::make_unique<Bishop>(Bishop
-                (Player::light, Position(j,7), squares_));
+                (Player::light, Position(j,7)));
     }
 
     square_vec[pos_to_idx({3,0})]=std::make_unique<Queen>(Queen(Player::dark,
-                                            Position(3,0),squares_));
+                                            Position(3,0)));
     square_vec[pos_to_idx({4,0})]=std::make_unique<King>(King(Player::dark,
-                                            Position(4,0),squares_));
+                                            Position(4,0)));
     square_vec[pos_to_idx({3,7})]=std::make_unique<Queen>(Queen(Player::light,
-                                            Position(3,7),squares_));
+                                            Position(3,7)));
     square_vec[pos_to_idx({4,7})]=std::make_unique<King>(King(Player::light,
-                                            Position(4,7),squares_));
+                                            Position(4,7)));
 }
 
 void Model::setup_pieces(){
-    for (int j = 0; j < 8; j++) {
+/*    for (int j = 0; j < 8; j++) {
         // Piece p = Piece(); // this works
         // this does not work
         // squares_[4][4] = p;
@@ -110,13 +110,13 @@ void Model::setup_pieces(){
     set_piece_(Queen(Player::dark, Position(0,3), squares_), {0,3});
     set_piece_(King(Player::dark, Position(0,4), squares_), {0,4});
     set_piece_(Queen(Player::light, Position(7,3), squares_), {7,3});
-    set_piece_(King(Player::light, Position(7,4), squares_), {7,4});
+    set_piece_(King(Player::light, Position(7,4), squares_), {7,4});*/
 }
 
 
 void
 Model::on_first_click(Position pos){
-    square_vec[pos_to_idx(pos)]->set_moves(pos, squares_);
+    square_vec[pos_to_idx(pos)]->set_moves(pos, square_vec);
     // p.set_moves(pos, squares_);
     piece_clicked_ = true;
     square_clicked_ = pos;
