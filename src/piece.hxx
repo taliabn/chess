@@ -35,7 +35,7 @@ public:
     {return piece_type; }
 
 protected:
-    const char* piece_type = "asdfaweof";
+    const char* piece_type = "None";
     Player player_;
     Position_set allowable_moves_; // all positions piece can move to
     Position_set find_line(

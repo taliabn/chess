@@ -102,7 +102,8 @@ TEST_CASE("game over checkmate")
     // white moves first
     // players can only move on their turn
     // players can only move pieces of their color
-        // clicking one piece of turn and then another has no effect
+        // clicking one piece of turn and then another of the same color
+        // doesn't play a move
     // can only play a move when a piece has been selected
 TEST_CASE("when can player move")
 {
@@ -110,9 +111,95 @@ TEST_CASE("when can player move")
     Model m = Model();
     Test_access access(m);
 
-    // make sure dark cannot move
+
+    // make sure nothing happens when no piece is selected and an empty square
+    // is clicked
+    // nothing has been clicked to start
+    CHECK(!access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(-1, -1));
+    const char* piece_type = access.model.piece_type_at(Model::Position(5,5));
+    // (5,5) is an empty square
+    CHECK(strcmp("None", piece_type) == 0);
+    // simulate clicking on (5,5)
+    access.model.check_pos(Model::Position(5,5));
+    // there is still nothing clicked
+    CHECK(!access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(-1, -1));
+    piece_type = access.model.piece_type_at(Model::Position(5,5));
+    // (5,5) is still an empty square
+    CHECK(strcmp("None", piece_type) == 0);
+
+
+    // make sure dark cannot move on the first turn
+    // game starts with light player
     CHECK(access.model.turn() == Player::light);
-    // try to move one of dark's pieces
+    // simulate clicking one of dark's pawns
+    access.model.check_pos(Model::Position(1,1));
+    // the click should not have done anything
+    CHECK(!access.model.piece_clicked());
+    CHECK(Model::Position(-1, -1) == access.model.square_clicked());
+
+
+    // now simulate clicking on one of lights pawns, which is allowed
+    access.model.check_pos(Model::Position(6, 6));
+    // the click should have selected that pawn
+    CHECK(access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(6, 6));
+
+    // now try clicking on a light rook, which is allowed
+    // the rook will be selected, and neither the rook nor the pawn will move
+    access.model.check_pos(Model::Position(7, 7));
+    CHECK(access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(7, 7));
+    // the pawn should still be at (6,6)
+    piece_type = access.model.piece_type_at(Model::Position(6, 6));
+    CHECK(strcmp("Pawn", piece_type) == 0);
+    // the rook should still be at (7,7)
+    piece_type = access.model.piece_type_at(Model::Position(7, 7));
+    CHECK(strcmp("Rook", piece_type) == 0);
+
+    // now click back to the light pawn and play a move, which is allowed
+    // select a light pawn
+    access.model.check_pos(Model::Position(6,6));
+    // before move, square in front of pawn is empty
+    piece_type = access.model.piece_type_at(Model::Position(6, 5));
+    CHECK(strcmp("None", piece_type) == 0);
+    // play move
+    access.model.check_pos(Model::Position(6,5));
+    // pawn should have moved, and the square where it was previously is empty
+    piece_type = access.model.piece_type_at(Model::Position(6, 5));
+    CHECK(strcmp("Pawn", piece_type) == 0);
+    piece_type = access.model.piece_type_at(Model::Position(6, 6));
+    CHECK(strcmp("None", piece_type) == 0);
+    // there should no longer be a piece selected
+    CHECK(!access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(-1, -1));
+
+    // check it has switched to dark's turn
+    CHECK(access.model.turn() == Player::dark);
+    // now dark can move
+    // select a dark pawn
+    access.model.check_pos(Model::Position(1, 1));
+    // the piece should have been selected
+    CHECK(access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(1, 1));
+    // before move, square in front of pawn is empty
+    piece_type = access.model.piece_type_at(Model::Position(1, 2));
+    CHECK(strcmp("None", piece_type) == 0);
+    // play move
+    access.model.check_pos(Model::Position(1, 2));
+    // pawn should have moved, and the square where it was previously is empty
+    piece_type = access.model.piece_type_at(Model::Position(1, 2));
+    CHECK(strcmp("Pawn", piece_type) == 0);
+    piece_type = access.model.piece_type_at(Model::Position(1, 1));
+    CHECK(strcmp("None", piece_type) == 0);
+
+    // there should no longer be a piece selected
+    CHECK(!access.model.piece_clicked());
+    CHECK(access.model.square_clicked() == Model::Position(-1, -1));
+    // the turn switched again
+    CHECK(access.model.turn() == Player::light);
+
 }
 
 // TEST CASES 5-: Pieces' allowable moves are accurate and enforced
