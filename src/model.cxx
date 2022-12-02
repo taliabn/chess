@@ -85,7 +85,7 @@ void Model::setup_pieces(){
 
 
 void
-Model::on_first_click(Position pos){
+Model::on_first_click_(Position pos){
     square_vec[pos_to_idx(pos)]->set_moves(pos, square_vec);
     // p.set_moves(pos, squares_);
     piece_clicked_ = true;
@@ -153,7 +153,7 @@ Model::check_pos(Position pos)
         play_move(pos);
         viable_moves_ = Position_set();
     } else if(piece_at_(pos).player() == turn_){
-        on_first_click(pos);
+        on_first_click_(pos);
     }
 }
 

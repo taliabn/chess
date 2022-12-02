@@ -11,24 +11,15 @@ struct Test_access
     // Returns whether a piece is highlighted or not
     bool get_piece_clicked();
 
+    void on_first_click(Model::Position pos);
+
     // Returns the square that is currently highlighted
     Model::Position get_square_clicked();
 
     // Returns the piece at a board position
     Piece get_piece_at(Model::Position pos);
 
-    // REVERSI COPY PASTA:
-    // // Sets the player at `posn` to `player`.
-    // void set_player(Model::Position posn, Player player);
-    // // Gives direct access to `model.next_moves_` so our tests can modify it:
-    // Move_map& next_moves();
-    // // gives direct access to 'model.board'
-    // Board& board();
-    // // gives access to find_flips
-    // Position_set find_flips(Model::Position p, Model::Dimensions d);
-    // void
-    // compute_next_moves();
-    // gives access to check_king_
+    // Runs check king and returns the result
     bool check_king_();
     // gives access to player_has_moves
     void player_has_moves();
@@ -46,36 +37,6 @@ Test_access::Test_access(Model& model)
         : model(model)
 { }
 
-// REVERSI COPY PASTA:
-// void
-// Test_access::set_player(Model::Position posn, Player player)
-// {
-//     model.board_[posn] = player;
-// }
-//
-// Move_map&
-// Test_access::next_moves()
-// {
-//     return model.next_moves_;
-// }
-//
-// void
-// Test_access::compute_next_moves()
-// {
-//     model.compute_next_moves_();
-// }
-// Board&
-// Test_access::board()
-// {
-//     return model.board_ ;
-// }
-//
-// Position_set
-// Test_access::find_flips ( Model :: Position p ,
-//                           Model :: Dimensions d )
-// {
-//     return model . find_flips_ (p , d );
-// }
 bool Test_access::check_king_() {
     return model.check_king_();
 }
@@ -84,10 +45,13 @@ void Test_access::player_has_moves() {
     model.player_has_moves();
 }
 
+void Test_access::on_first_click(Model::Position pos) {
+    model.on_first_click_(pos);
+}
+
 void Test_access::set_piece(Piece piece, Model::Position pos){
     model.set_piece_(piece, pos);
 }
-
 
 bool
 Test_access::get_piece_clicked()
@@ -143,9 +107,23 @@ TEST_CASE("capture piece")
     // Pieces' allowable moves reflect the rules of chess
     // can only move piece to square where it is allowed move
     // pawns can move two squares on first move
+
 TEST_CASE("where piece can move")
 {
-    CHECK(1 + 1 == 2);
+    Model m = Model();
+    Test_access access(m);
+
+    // Set the highlighted piece to the light rook in the corner
+    access.get_piece_at({0, 7});
+
+    // Attempt to move the rook one square to the right
+    access.model.check_pos({1, 7});
+
+    // Check that the rook has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 7}), "Rook") == 0);
+    // Check that the knight is still there
+    CHECK(strcmp(access.model.piece_type_at({1, 7}), "Knight") == 0);
+
 }
 
 

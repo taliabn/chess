@@ -46,10 +46,6 @@ public:
     // this gets used by the controller
     Player operator[](Position) const;
 
-    // selects a piece
-        // unchecked precondition: piece can be moved
-    void on_first_click(Position);
-
     // returns a playable piece been selected to be moved
     bool piece_clicked() const
     { return piece_clicked_; }
@@ -108,4 +104,8 @@ private:
     // Sets given position on board to hold the given piece
     void set_piece_(Piece piece, Position pos);
     void setup_pieces();
+
+    // selects a piece
+    // unchecked precondition: piece can be moved
+    void on_first_click_(Position);
 };
