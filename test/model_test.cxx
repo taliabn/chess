@@ -1,10 +1,73 @@
 #include "model.hxx"
 #include <catch.hxx>
 
+struct Test_access
+{
+    Model& model;
 
+    // Constructs a `Test_access` with a reference to the Model under test.
+    explicit Test_access(Model&);
+
+    // REVERSI COPY PASTA:
+    // // Sets the player at `posn` to `player`.
+    // void set_player(Model::Position posn, Player player);
+    // // Gives direct access to `model.next_moves_` so our tests can modify it:
+    // Move_map& next_moves();
+    // // gives direct access to 'model.board'
+    // Board& board();
+    // // gives access to find_flips
+    // Position_set find_flips(Model::Position p, Model::Dimensions d);
+    // void
+    // compute_next_moves();
+};
+
+///
+/// Member function definitions for Test_access
+///
+
+
+// REVERSI COPY PASTA:
+// void
+// Test_access::set_player(Model::Position posn, Player player)
+// {
+//     model.board_[posn] = player;
+// }
+//
+// Move_map&
+// Test_access::next_moves()
+// {
+//     return model.next_moves_;
+// }
+//
+// void
+// Test_access::compute_next_moves()
+// {
+//     model.compute_next_moves_();
+// }
+// Board&
+// Test_access::board()
+// {
+//     return model.board_ ;
+// }
+//
+// Position_set
+// Test_access::find_flips ( Model :: Position p ,
+//                           Model :: Dimensions d )
+// {
+//     return model . find_flips_ (p , d );
+// }
+
+
+Test_access::Test_access(Model& model)
+        : model(model)
+{ }
+
+// ACTUAL TEST CASES
 // TEST CASE 1: Game is over when player cannot move
 TEST_CASE("game over player can't move")
 {
+    Model m = Model();
+    Test_access access(m);
     CHECK(1 + 1 == 2);
 }
 
@@ -39,3 +102,5 @@ TEST_CASE("where piece can move")
 {
     CHECK(1 + 1 == 2);
 }
+
+

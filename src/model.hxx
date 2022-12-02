@@ -78,6 +78,13 @@ public:
     int pos_to_idx(Position pos) const;
     Position idx_to_pos(int idx) const;
 
+#ifdef CS211_TESTING
+    // When this class is compiled for testing, members of a struct named
+    // Test_access will be allowed to access private members of this class.
+    friend struct Test_access;
+#endif
+
+
 private:
     Player turn_   = Player::light;
     Player winner_ = Player::neither;
