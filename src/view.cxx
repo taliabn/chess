@@ -6,13 +6,16 @@ using Sprite_set = ge211::Sprite_set;
 // Constant values
 static Color const dark_square {179, 132, 100};
 static Color const light_square {235, 219, 179};
+static Color const green_color {130,151,104};
 // side length of each square on the board
 static int const grid_size = 48; // arbitrarily chosen
 
 View::View(Model const& model)
         : model_(model),
           dark_square_sprite({grid_size, grid_size}, dark_square),
-          light_square_sprite({grid_size, grid_size}, light_square)
+          light_square_sprite({grid_size, grid_size}, light_square),
+          green_square_sprite({grid_size, grid_size}, green_color),
+          green_circle_sprite(grid_size/6, green_color)
 { }
 
 void
@@ -20,10 +23,16 @@ View::draw(ge211::Sprite_set& set)
 {
     // draw background board squares
     for (auto pos : model_.board()) {
-        if ((pos.x + pos.y)%2) {
+        if (pos == model_.square_clicked()) {
+            set.add_sprite(green_square_sprite, board_to_screen(pos));
+        } else if ((pos.x + pos.y)%2) {
             set.add_sprite(dark_square_sprite, board_to_screen(pos));
         } else {
             set.add_sprite(light_square_sprite, board_to_screen(pos));
+        }
+
+        if (model_.viable_moves()[pos]) {
+            set.add_sprite(green_circle_sprite, board_to_screen(pos), 2);
         }
     }
 
@@ -99,6 +108,19 @@ View::draw(ge211::Sprite_set& set)
                 set.add_sprite(dark_king_sprite, board_to_screen(pos), 1,
                                ge211::Transform::scale(0.11));
             }
+
+            if (model_.is_game_over()) {
+                if (model_[pos] == Player::light && model_.winner() ==
+                        Player::light) {
+                    set.add_sprite(light_win_sprite, board_to_screen(pos), 2,
+                                   ge211::Transform::scale(0.3)); //0.32
+                } else if (model_[pos] == Player::dark && model_.winner() ==
+                        Player::dark){
+                    set.add_sprite(dark_win_sprite, board_to_screen(pos), 2,
+                                   ge211::Transform::scale(0.3));
+                }
+            }
+
         }
         // } else if (strcmp(piece_type, "Bishop") == 0) {
         //     ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?

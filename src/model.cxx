@@ -120,6 +120,7 @@ Model::on_first_click(Position pos){
     // p.set_moves(pos, squares_);
     piece_clicked_ = true;
     square_clicked_ = pos;
+    viable_moves_ = piece_at_(square_clicked_).allowable_moves();
 }
 
 
@@ -162,8 +163,9 @@ Model::check_pos(Position pos)
     if (is_game_over()) {return;}
     // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
     if (piece_clicked_ &&
-            piece_at_(square_clicked_).allowable_moves()[pos]){
+            viable_moves_[pos]){
         play_move(pos);
+        viable_moves_ = Position_set();
     } else if(piece_at_(pos).player() == turn_){
         on_first_click(pos);
     }
@@ -178,6 +180,8 @@ bool Model::check_king_()
             return true;
         }
     }
+
+    winner_ = turn_;
     return false;
 }
 

@@ -39,6 +39,8 @@ private:
     Model const& model_;
     ge211::Rectangle_sprite const dark_square_sprite;
     ge211::Rectangle_sprite const light_square_sprite;
+    ge211::Rectangle_sprite const green_square_sprite;
+    ge211::Circle_sprite const green_circle_sprite;
 	ge211::Image_sprite light_pawn_sprite{"light_pawn.png"};
     ge211::Image_sprite dark_pawn_sprite{"dark_pawn.png"};
 	ge211::Image_sprite light_knight_sprite{"light_knight.png"};
@@ -51,5 +53,7 @@ private:
     ge211::Image_sprite dark_queen_sprite{"dark_queen.png"};
     ge211::Image_sprite light_king_sprite{"light_king.png"};
     ge211::Image_sprite dark_king_sprite{"dark_king.png"};
+    ge211::Image_sprite light_win_sprite{"light_win.png"};
+    ge211::Image_sprite dark_win_sprite{"dark_win.png"};
 	
 };

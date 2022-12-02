@@ -33,7 +33,7 @@ public:
     // Returns whether the game is finished. This is true when one player's
     // king has been taken
     bool is_game_over() const
-    { return turn() == Player::neither; }
+    { return turn_ == Player::neither; }
 
     // Returns the current turn, or `Player::neither` if the game is
     // over.
@@ -60,6 +60,10 @@ public:
     Position square_clicked() const
     { return square_clicked_; }
 
+    // returns the position set of viable moves
+    Position_set viable_moves() const
+    { return viable_moves_; }
+
     // move piece at position square_clicked to position dst
     void play_move(Position dst);
 
@@ -85,6 +89,7 @@ private:
     Position square_clicked_ = {-1,-1};
     // game
     std::vector<std::unique_ptr<Piece>> square_vec;
+    Position_set viable_moves_;
 
     // Returns the piece located in squares_ at the given position
         // this is used internally within Model
