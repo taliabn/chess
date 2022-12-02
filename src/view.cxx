@@ -42,7 +42,7 @@ View::draw(ge211::Sprite_set& set)
                                ge211::Transform::scale(0.11));
             } else {
                 set.add_sprite(dark_pawn_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.4));
+                               ge211::Transform::scale(0.11));
             }
         } else if (strcmp(piece_type, "Knight") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
@@ -53,7 +53,7 @@ View::draw(ge211::Sprite_set& set)
                                ge211::Transform::scale(0.11));
             } else {
                 set.add_sprite(dark_knight_sprite, board_to_screen(pos), 1,
-                               ge211::Transform::scale(0.12));
+                               ge211::Transform::scale(0.11));
             }
         } else if (strcmp(piece_type, "Bishop") == 0) {
             // ge211::Image_sprite piece_sprite_(model_[pos] == Player::light ?
