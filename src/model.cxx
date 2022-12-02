@@ -109,8 +109,6 @@ Model::play_move(Position dst)
     //
     swap(square_vec[pos_to_idx(square_clicked_)], square_vec[pos_to_idx(dst)]);
     square_vec[pos_to_idx(square_clicked_)]=std::make_unique<Piece>();
-    set_piece_(piece_at_(square_clicked_), dst);
-    set_piece_(Piece(), square_clicked_);
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
@@ -146,18 +144,21 @@ Model::player_has_moves() {
 void
 Model::check_pos(Position pos)
 {
-    if (is_game_over()) {return;}
-    // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
-    if (piece_clicked_ &&
-            viable_moves_[pos]){
-        play_move(pos);
-        viable_moves_ = Position_set();
-    } else if(piece_at_(pos).player() == turn_){
-        on_first_click_(pos);
+    if (good_position(pos)) {
+        if (is_game_over()) { return; }
+        // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
+        if (piece_clicked_ &&
+            viable_moves_[pos]) {
+            play_move(pos);
+            viable_moves_ = Position_set();
+        } else if (piece_at_(pos).player() == turn_) {
+            on_first_click_(pos);
+        }
     }
 }
 
-bool Model::check_king_()
+bool
+Model::check_king_()
 {
     for (auto pos: board()) {
         // first condition checks if piece is of type King
@@ -173,9 +174,10 @@ bool Model::check_king_()
 
 
 void
-Model::set_piece_(Piece piece, Position pos) {
+Model::set_piece_(Position src, Position dst) {
 
-    squares_[pos.y][pos.x] = piece;
+    square_vec[pos_to_idx(dst)]=std::make_unique<Piece>();
+    swap(square_vec[pos_to_idx(src)], square_vec[pos_to_idx(dst)]);
 }
 
 Piece

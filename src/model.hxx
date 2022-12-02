@@ -102,7 +102,7 @@ private:
     void player_has_moves();
 
     // Sets given position on board to hold the given piece
-    void set_piece_(Piece piece, Position pos);
+    void set_piece_(Position src, Position dst);
     void setup_pieces();
 
     // selects a piece
