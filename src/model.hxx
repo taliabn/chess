@@ -27,9 +27,6 @@ public:
     // This can be used to iterate over the positions.
     Rectangle board() const;
 
-    // initialize pieces in correct positions to start game
-    void setup_pieces();
-
     // Returns whether the game is finished. This is true when one player's
     // king has been taken
     bool is_game_over() const
@@ -110,5 +107,5 @@ private:
 
     // Sets given position on board to hold the given piece
     void set_piece_(Piece piece, Position pos);
-    void setup_pieces_new();
+    void setup_pieces();
 };

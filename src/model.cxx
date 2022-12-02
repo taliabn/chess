@@ -17,7 +17,6 @@ Model::Model()
     for (auto i = 0; i < 64; ++i) {
         square_vec.push_back(std::make_unique<Piece>());
     }
-    setup_pieces_new();
     setup_pieces();
 }
 
@@ -40,7 +39,7 @@ ge211::Posn<int> Model::idx_to_pos(int idx) const {
 
 
 
-void Model::setup_pieces_new(){
+void Model::setup_pieces(){
     // square_vec[4] = (std::make_unique<Pawn>(Player::dark, Position(4,4),
     //                                         squares_));
     // square_vec[4]->set_moves(Position(0,0), squares_);
@@ -82,35 +81,6 @@ void Model::setup_pieces_new(){
                                             Position(3,7)));
     square_vec[pos_to_idx({4,7})]=std::make_unique<King>(King(Player::light,
                                             Position(4,7)));
-}
-
-void Model::setup_pieces(){
-/*    for (int j = 0; j < 8; j++) {
-        // Piece p = Piece(); // this works
-        // this does not work
-        // squares_[4][4] = p;
-        set_piece_(Pawn(Player::dark, Position(1,j), squares_), {1,j});
-        set_piece_(Pawn(Player::light, Position (6,j), squares_), {6, j});
-    }
-
-    for (int j = 0; j < 8; j = j + 7) {
-        set_piece_(Rook(Player::dark, Position(0,j), squares_), {0,j});
-        set_piece_(Rook(Player::light, Position(7,j), squares_), {7,j});
-    }
-
-    for (int j = 1; j < 8; j = j + 5) {
-       set_piece_(Knight(Player::dark, Position(0,j), squares_), {0,j});
-       set_piece_(Knight(Player::light, Position(7,j), squares_), {7,j});
-    }
-    for (int j = 2; j < 8; j = j + 3) {
-        set_piece_(Bishop(Player::dark, Position(0,j), squares_), {0,j});
-        set_piece_(Bishop(Player::light, Position(7,j), squares_), {7,j});
-    }
-
-    set_piece_(Queen(Player::dark, Position(0,3), squares_), {0,3});
-    set_piece_(King(Player::dark, Position(0,4), squares_), {0,4});
-    set_piece_(Queen(Player::light, Position(7,3), squares_), {7,3});
-    set_piece_(King(Player::light, Position(7,4), squares_), {7,4});*/
 }
 
 
