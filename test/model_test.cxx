@@ -19,12 +19,23 @@ struct Test_access
     // Position_set find_flips(Model::Position p, Model::Dimensions d);
     // void
     // compute_next_moves();
+    // gives access to check_king_
+    bool check_king_();
+    // gives access to player_has_moves
+    void player_has_moves();
+    // gives access to set_piece
+    void set_piece(Piece piece, Model::Position pos);
 };
 
 ///
 /// Member function definitions for Test_access
 ///
 
+
+
+Test_access::Test_access(Model& model)
+        : model(model)
+{ }
 
 // REVERSI COPY PASTA:
 // void
@@ -56,11 +67,18 @@ struct Test_access
 // {
 //     return model . find_flips_ (p , d );
 // }
+bool Test_access::check_king_() {
+    return model.check_king_();
+}
 
+void Test_access::player_has_moves() {
+    model.player_has_moves();
+}
 
-Test_access::Test_access(Model& model)
-        : model(model)
-{ }
+void Test_access::set_piece(Piece piece, Model::Position pos){
+    model.set_piece_(piece, pos);
+}
+
 
 // ACTUAL TEST CASES
 // TEST CASE 1: Game is over when player cannot move
