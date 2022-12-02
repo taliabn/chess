@@ -8,6 +8,15 @@ struct Test_access
     // Constructs a `Test_access` with a reference to the Model under test.
     explicit Test_access(Model&);
 
+    // Returns whether a piece is highlighted or not
+    bool get_piece_clicked();
+
+    // Returns the square that is currently highlighted
+    Model::Position get_square_clicked();
+
+    // Returns the piece at a board position
+    Piece get_piece_at(Model::Position pos);
+
     // REVERSI COPY PASTA:
     // // Sets the player at `posn` to `player`.
     // void set_player(Model::Position posn, Player player);
@@ -61,6 +70,24 @@ struct Test_access
 Test_access::Test_access(Model& model)
         : model(model)
 { }
+
+bool
+Test_access::get_piece_clicked()
+{
+    return model.piece_clicked_ ;
+}
+
+Model::Position
+Test_access::get_square_clicked()
+{
+    return model.square_clicked_;
+}
+
+Piece
+Test_access::get_piece_at(Model::Position pos)
+{
+    return model.piece_at_(pos);
+}
 
 // ACTUAL TEST CASES
 // TEST CASE 1: Game is over when player cannot move
