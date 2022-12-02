@@ -332,3 +332,122 @@ TEST_CASE("Knight moves")
     CHECK(strcmp(access.model.piece_type_at({2, 4}), "Rook") == 0);
 
 }
+
+//Test the pawn moves and captures
+TEST_CASE("Pawn moves")
+{
+    Model m = Model();
+    Test_access access(m);
+
+    // Set the highlighted piece to the light pawn in the corner
+    access.on_first_click({0, 6});
+
+    // Attempt to move the pawn three squares up (should fail)
+    access.model.check_pos({0, 3});
+
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 3}), "Pawn") == 0);
+
+    // Move the pawn two squares up
+    access.on_first_click({0, 6});
+    access.model.check_pos({0, 4});
+
+    // Check that the pawn has moved
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK(strcmp(access.model.piece_type_at({0, 4}), "Pawn") == 0);
+
+    // Reset pawn position
+    access.set_piece({0, 4}, {0, 6});
+    // Put a piece in front of the pawn
+    access.set_piece({1, 7}, {0, 5});
+
+    // Attempt to move the pawn two squares up (can't because piece is in the
+    // way)
+    access.on_first_click({0, 6});
+    access.model.check_pos({0, 4});
+
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 4}), "Pawn") == 0);
+    // Check that the knight is still there
+    CHECK(strcmp(access.model.piece_type_at({0, 5}), "Knight") == 0);
+
+    // Attempt to move the pawn one square up (can't because knight is there)
+    access.on_first_click({0, 6});
+    access.model.check_pos({0, 5});
+
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 5}), "Pawn") == 0);
+    // Check that the knight is still there
+    CHECK(strcmp(access.model.piece_type_at({0, 5}), "Knight") == 0);
+
+    // Attempt to move the pawn diagonally to the right (can't because there
+    // is nothing to capture)
+    access.on_first_click({0, 6});
+    access.model.check_pos({1, 5});
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({1, 5}), "Pawn") == 0);
+
+    // Move the knight to the capture square
+    access.set_piece({0, 5}, {1, 5});
+    // Check that the pawn still cannot move to that square
+    access.on_first_click({0, 6});
+    access.model.check_pos({1, 5});
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({1, 5}), "Pawn") == 0);
+
+    //Put a dark knight in front of the pawn
+    access.set_piece({6, 0}, {0, 5});
+
+    // Attempt to move the pawn two squares up (can't because piece is in the
+    // way)
+    access.on_first_click({0, 6});
+    access.model.check_pos({0, 4});
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 4}), "Pawn") == 0);
+    // Check that the knight is still there
+    CHECK(strcmp(access.model.piece_type_at({0, 5}), "Knight") == 0);
+
+    // Attempt to move the pawn one square up (can't because knight is there)
+    access.on_first_click({0, 6});
+    access.model.check_pos({0, 5});
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 5}), "Pawn") == 0);
+    // Check that the knight is still there
+    CHECK(strcmp(access.model.piece_type_at({0, 5}), "Knight") == 0);
+
+    // Attempt to move the pawn diagonally to the right (can't because there
+    // is nothing to capture)
+    access.on_first_click({0, 6});
+    access.model.check_pos({1, 5});
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({1, 5}), "Pawn") == 0);
+
+    //Move dark knight to the capture square
+    access.set_piece({1, 0}, {1, 5});
+    // Move the pawn to that square
+    access.on_first_click({0, 6});
+    access.model.check_pos({1, 5});
+    // Check that the pawn has moved
+    CHECK_FALSE(strcmp(access.model.piece_type_at({0, 6}), "Pawn") == 0);
+    CHECK(strcmp(access.model.piece_type_at({1, 5}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({1, 5}), "Knight") == 0);
+
+    // Move the pawn to the center of the board
+    access.set_piece({1, 5}, {4, 4});
+    // Check that the pawn cannot move two squares (because it has left the
+    // second rank)
+    access.on_first_click({4, 4});
+    access.model.check_pos({4, 2});
+    // Check that the pawn has not moved
+    CHECK(strcmp(access.model.piece_type_at({4, 4}), "Pawn") == 0);
+    CHECK_FALSE(strcmp(access.model.piece_type_at({4, 2}), "Pawn") == 0);
+
+}
