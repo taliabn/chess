@@ -19,7 +19,11 @@ struct Test_access
     // Returns the piece at a board position
     Piece get_piece_at(Model::Position pos);
 
-    // Runs check king and returns the result
+    // change piece_clicked
+    void set_piece_clicked(bool is_true);
+    // change square_clicked
+    void set_square_clicked(Model::Position pos);
+    // gives access to check_king_
     bool check_king_();
     // gives access to player_has_moves
     void player_has_moves();
@@ -30,7 +34,6 @@ struct Test_access
 ///
 /// Member function definitions for Test_access
 ///
-
 
 
 Test_access::Test_access(Model& model)
@@ -51,6 +54,15 @@ void Test_access::on_first_click(Model::Position pos) {
 
 void Test_access::set_piece(Piece piece, Model::Position pos){
     model.set_piece_(piece, pos);
+}
+
+void Test_access::set_piece_clicked(bool is_true){
+    model.piece_clicked_ = is_true;
+}
+
+void Test_access::set_square_clicked(Model::Position pos)
+{
+    model.square_clicked_ = pos;
 }
 
 bool
@@ -94,7 +106,13 @@ TEST_CASE("game over checkmate")
     // can only play a move when a piece has been selected
 TEST_CASE("when can player move")
 {
-    CHECK(1 + 1 == 2);
+    // setup
+    Model m = Model();
+    Test_access access(m);
+
+    // make sure dark cannot move
+    CHECK(access.model.turn() == Player::light);
+    // try to move one of dark's pieces
 }
 
 // TEST CASE 4: a move captures an opponent's piece
