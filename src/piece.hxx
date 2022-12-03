@@ -20,29 +20,42 @@ public:
 
     // compute all positions piece can move to
     virtual Position_set calculate_moves(Position,
-                                         std::vector<std::unique_ptr<Piece>> &square_vec);
+                             std::vector<std::unique_ptr<Piece>> &square_vec);
+
     // updates allowable_moves_
     void set_moves(Position, std::vector<std::unique_ptr<Piece>>
     &square_vec);
+
     // Returns the player who owns the piece
     Player player() const
     { return player_; }
+
     // Returns all positions piece can move to
     Position_set allowable_moves() const
     { return allowable_moves_; }
 
+    // Returns the piece type
     virtual const char* get_piece_type()
     {return piece_type; }
 
 protected:
+    // Holds a string with the name of the piece
     const char* piece_type = "None";
+    // Holds the player the piece belongs to
     Player player_;
     Position_set allowable_moves_; // all positions piece can move to
+
+    // Returns a position set with the positions a piece can move to. Takes
+    // the position of the piece, a vector of directions the piece can move
+    // in (stored in a dimension vector), the square_vec that holds the board
+    // state, and a boolean that declares whether the piece can move multiple
+    // times in the same direction (kings cannot move multiple times but
+    // queens can).
     Position_set find_line(
             Position pos, std::vector<ge211::geometry::Dims<int>> dims,
             std::vector<std::unique_ptr<Piece>> &square_vec, bool no_line);
     // returns piece located at given square on board
-        // this is used internally within Piece
+    // this is used internally within Piece
     Piece piece_at_(ge211::Posn<int> pos, std::vector<std::unique_ptr<Piece>>
     &square_vec);
 };
@@ -50,13 +63,18 @@ protected:
 class Pawn : public Piece
 {
 public:
-    int test = 4;
+    //Constructor, calls piece constructor to initialize player information
     Pawn(Player player, Position pos);
+
+    //Calculates the viable moves for a pawn at a given position
     Position_set calculate_moves(Position,
-                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+
+    //Overrides the virtual function in Piece of the same name to return "Pawn"
     const char* get_piece_type() override
     {return piece_type; }
 private:
+    //Set piece type to pawn
     const char* piece_type = "Pawn";
 
 };
@@ -65,12 +83,19 @@ private:
 class Knight : public Piece
 {
 public:
+    //Constructor, calls piece constructor to initialize player information
     Knight(Player player, Position pos);
+
+    //Calculates the viable moves for a knight at a given position
     Position_set calculate_moves(Position,
-                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+                    std::vector<std::unique_ptr<Piece>> &square_vec) override;
+
+    //Overrides the virtual function in Piece of the same name to return
+    // "Knight"
     const char* get_piece_type() override
     {return piece_type; }
 private:
+    //Set piece type to Knight
     const char* piece_type = "Knight";
 };
 
@@ -78,12 +103,19 @@ private:
 class Bishop : public Piece
 {
 public:
+    //Constructor, calls piece constructor to initialize player information
     Bishop(Player player, Position pos);
+
+    //Calculates the viable moves for a bishop at a given position
     Position_set calculate_moves(Position,
-                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+
+    //Overrides the virtual function in Piece of the same name to return
+    // "Bishop"
     const char* get_piece_type() override
     {return piece_type; }
 private:
+    //Set piece type to Bishop
     const char* piece_type = "Bishop";
 };
 
@@ -91,12 +123,18 @@ private:
 class Rook : public Piece
 {
 public:
+    //Constructor, calls piece constructor to initialize player information
     Rook(Player player, Position pos);
+
+    //Calculates the viable moves for a rook at a given position
     Position_set calculate_moves(Position,
-                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+    //Overrides the virtual function in Piece of the same name to return
+    // "Rook"
     const char* get_piece_type() override
     {return piece_type; }
 private:
+    //Set piece type to Rook
     const char* piece_type = "Rook";
 };
 
@@ -104,12 +142,19 @@ private:
 class Queen : public Piece
 {
 public:
+    //Constructor, calls piece constructor to initialize player information
     Queen(Player player, Position pos);
+
+    //Calculates the viable moves for the queen at a given position
     Position_set calculate_moves(Position,
-                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+
+    //Overrides the virtual function in Piece of the same name to return
+    // "Queen"
     const char* get_piece_type() override
     {return piece_type; }
 private:
+    //Set piece type to Queen
     const char* piece_type = "Queen";
 };
 
@@ -117,11 +162,18 @@ private:
 class King : public Piece
 {
 public:
+    //Constructor, calls piece constructor to initialize player information
     King(Player player, Position pos);
+
+    //Calculates the viable moves for the king at a given position
     Position_set calculate_moves(Position,
-                                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+                 std::vector<std::unique_ptr<Piece>> &square_vec) override;
+
+    //Overrides the virtual function in Piece of the same name to return
+    // "King"
     const char* get_piece_type() override
     {return piece_type; }
 private:
+    //Set piece type to King
     const char* piece_type = "King";
 };
