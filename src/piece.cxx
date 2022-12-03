@@ -20,7 +20,7 @@ Piece::piece_at_(ge211::Posn<int> pos, std::vector<std::unique_ptr<Piece>>
 }
 
 bool
-Piece::good_position(ge211::Posn<int> pos)
+good_position(ge211::Posn<int> pos)
 {
     return 0 <= pos.x && pos.x < 8 &&
            0 <= pos.y && pos.y < 8;

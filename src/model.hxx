@@ -27,9 +27,6 @@ public:
     // This can be used to iterate over the positions.
     Rectangle board() const;
 
-    // initialize pieces in correct positions to start game
-    void setup_pieces();
-
     // Returns whether the game is finished. This is true when one player's
     // king has been taken
     bool is_game_over() const
@@ -48,10 +45,6 @@ public:
     // Returns the piece at the given position
     // this gets used by the controller
     Player operator[](Position) const;
-
-    // selects a piece
-        // unchecked precondition: piece can be moved
-    void on_first_click(Position);
 
     // returns a playable piece been selected to be moved
     bool piece_clicked() const
@@ -78,6 +71,13 @@ public:
     int pos_to_idx(Position pos) const;
     Position idx_to_pos(int idx) const;
 
+#ifdef CS211_TESTING
+    // When this class is compiled for testing, members of a struct named
+    // Test_access will be allowed to access private members of this class.
+    friend struct Test_access;
+#endif
+
+
 private:
     Player turn_   = Player::light;
     Player winner_ = Player::neither;
@@ -102,6 +102,10 @@ private:
     void player_has_moves();
 
     // Sets given position on board to hold the given piece
-    void set_piece_(Piece piece, Position pos);
-    void setup_pieces_new();
+    void set_piece_(Position src, Position dst);
+    void setup_pieces();
+
+    // selects a piece
+    // unchecked precondition: piece can be moved
+    void on_first_click_(Position);
 };

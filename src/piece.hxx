@@ -5,6 +5,8 @@
 #include "position_set.hxx"
 #include <vector>
 
+// Returns whether the given position is in bounds.
+bool good_position(ge211::Posn<int>);
 
 class Piece
 {
@@ -28,13 +30,12 @@ public:
     // Returns all positions piece can move to
     Position_set allowable_moves() const
     { return allowable_moves_; }
-    // Returns whether the given position is in bounds.
-    bool good_position(ge211::Posn<int>);
+
     virtual const char* get_piece_type()
     {return piece_type; }
 
 protected:
-    const char* piece_type = "asdfaweof";
+    const char* piece_type = "None";
     Player player_;
     Position_set allowable_moves_; // all positions piece can move to
     Position_set find_line(
