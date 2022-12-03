@@ -6,14 +6,7 @@ using namespace std;
 
 
 Model::Model()
-    : dims_(8,8)
 {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            squares_[i][j] = Piece(); // default "dummy" piece
-            // (player=neither)
-        }
-    }
     for (auto i = 0; i < 64; ++i) {
         square_vec.push_back(std::make_unique<Piece>());
     }
@@ -30,24 +23,8 @@ int Model::pos_to_idx(Position pos) const {
     return 8*pos.x + pos.y;
 }
 
-ge211::Posn<int> Model::idx_to_pos(int idx) const {
-    // return Position(2,2);
-    auto x = int(idx / 8);
-    auto y = int(idx % 8);
-    return Position(x, y);
-}
-
-
-
 void Model::setup_pieces(){
-    // square_vec[4] = (std::make_unique<Pawn>(Player::dark, Position(4,4),
-    //                                         squares_));
-    // square_vec[4]->set_moves(Position(0,0), squares_);
     for (int j = 0; j < 8; j++) {
-        // Piece p = Piece(); // this works
-        // this does not work
-        // squares_[4][4] = p;
-
         square_vec[pos_to_idx({j,1})]=std::make_unique<Pawn>(Pawn
                 (Player::dark,Position(j,1)));
         square_vec[pos_to_idx({j,6})]=std::make_unique<Pawn>(Pawn
@@ -73,6 +50,7 @@ void Model::setup_pieces(){
                 (Player::light, Position(j,7)));
     }
 
+    // Set the king and queen pieces
     square_vec[pos_to_idx({3,0})]=std::make_unique<Queen>(Queen(Player::dark,
                                             Position(3,0)));
     square_vec[pos_to_idx({4,0})]=std::make_unique<King>(King(Player::dark,
@@ -87,7 +65,6 @@ void Model::setup_pieces(){
 void
 Model::on_first_click_(Position pos){
     square_vec[pos_to_idx(pos)]->set_moves(pos, square_vec);
-    // p.set_moves(pos, squares_);
     piece_clicked_ = true;
     square_clicked_ = pos;
     viable_moves_ = piece_at_(square_clicked_).allowable_moves();
@@ -103,12 +80,9 @@ Model::piece_type_at(Position pos) const {
 void
 Model::play_move(Position dst)
 {
-    // Piece tmp = &square_vec[pos_to_idx(square_clicked_)];
-    // square_vec[pos_to_idx(dst)]=;
-    // square_vec[pos_to_idx({1,j})]=std::make_unique<Pawn>(Pawn(Player::dark,Position(1,j), squares_));
-    //
     swap(square_vec[pos_to_idx(square_clicked_)], square_vec[pos_to_idx(dst)]);
     square_vec[pos_to_idx(square_clicked_)]=std::make_unique<Piece>();
+    // Reset the highlighted piece and clicked square fields.
     piece_clicked_ = false;
     square_clicked_ = {-1, -1};
 
@@ -144,14 +118,18 @@ Model::player_has_moves() {
 void
 Model::check_pos(Position pos)
 {
-    if (good_position(pos)) {
-        if (is_game_over()) { return; }
-        // bool p = model_[model_.square_clicked()].allowable_moves()[board_pos];
+    if (good_position(pos) && !is_game_over()) {
+        // If a piece is highlighted, check to see whether clicked position
+        // is within its viable moves
         if (piece_clicked_ &&
             viable_moves_[pos]) {
+            // If so, play the move and clear viable moves
             play_move(pos);
             viable_moves_ = Position_set();
-        } else if (piece_at_(pos).player() == turn_) {
+        }
+        // If the clicked position is a piece that the current player owns,
+        // set it to the highlighted piece
+        else if (piece_at_(pos).player() == turn_) {
             on_first_click_(pos);
         }
     }
@@ -175,7 +153,6 @@ Model::check_king_()
 
 void
 Model::set_piece_(Position src, Position dst) {
-
     square_vec[pos_to_idx(dst)]=std::make_unique<Piece>();
     swap(square_vec[pos_to_idx(src)], square_vec[pos_to_idx(dst)]);
 }
@@ -183,7 +160,6 @@ Model::set_piece_(Position src, Position dst) {
 Piece
 Model::piece_at_(ge211::Posn<int> pos)
 {
-    // return square_vec[pos.x + pos.y];
     return *square_vec[pos_to_idx(pos)];
 }
 
@@ -198,5 +174,5 @@ Model::operator[](Position pos) const
 Model::Rectangle
 Model::all_positions() const
 {
-    return Rectangle::from_top_left(the_origin, dims_);
+    return Rectangle::from_top_left(the_origin, Dimensions(8, 8));
 }
