@@ -85,11 +85,50 @@ Test_access::get_piece_at(Model::Position pos)
 
 // ACTUAL TEST CASES
 // TEST CASE 1: Game is over when player cannot move
-TEST_CASE("game over player can't move")
+TEST_CASE("Stalemate Check")
 {
     Model m = Model();
     Test_access access(m);
-    CHECK(1 + 1 == 2);
+
+    // This requirement will be tested by 'locking' the king in the corner by
+    // surrounding it with pawns. Pawns do not promote in our implementation,
+    // so there will be no moves available.
+
+    // Move the king to the corner
+    access.set_piece({4, 0}, {7, 7});
+
+    // Surround the king with pawns
+    access.set_piece({0, 1}, {6, 7});
+    access.set_piece({2, 1}, {6, 6});
+    access.set_piece({3, 1}, {7, 6});
+
+    Position_set protected_squares {
+        {7, 7}, {6, 7}, {6, 6}, {7, 6}, {4, 7}
+    };
+
+    // Clear the board except for the light king and the dark pieces moved
+    for (auto pos : access.model.board()) {
+        if (!protected_squares[pos]) {
+            // If not one of the protected squares, set empty square
+            access.set_piece({4, 4}, pos);
+            CHECK(strcmp(access.model.piece_type_at(pos), "None") == 0);
+        }
+    }
+
+    // Move the light king (since dark king cannot move, light player should
+    // win after moving)
+
+    access.on_first_click({4, 7});
+    access.model.check_pos({4, 6});
+
+    // Check game over
+    CHECK(access.model.is_game_over());
+
+    // Check light player is winner
+    CHECK(access.model.winner() == Player::light);
+    // Check turn is no longer set
+    CHECK(access.model.turn() == Player::neither);
+
 }
 
 // TEST CASE 2: Game is over from checkmate
