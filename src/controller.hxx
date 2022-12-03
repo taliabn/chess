@@ -18,7 +18,6 @@ protected:
     std::string initial_window_title() const override;
 
     // try to select piece or try to play move
-    // behavior is dependent on value of "piece_clicked_" in model
     void on_mouse_down(ge211::Mouse_button m, ge211::Posn<int> position)
     override;
 
