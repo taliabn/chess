@@ -49,12 +49,17 @@ Piece::find_line(Position pos, std::vector<ge211::geometry::Dims<int>> dims,
         Position advanced_pos = {pos.x + dim.width, pos.y + dim.height};
 
         while (good_position(advanced_pos)) {
+            //If the position contains a piece that turn_ owns, break from
+            // loop before adding the move.
             if (piece_at_(advanced_pos, square_vec).player() != player_) {
                 pset[advanced_pos] = true;
             } else {
                 break;
             }
 
+            //If the position contains an opposing piece, break from loop
+            // after including the move in the first if statement. If
+            // the noloop flag is set, break after first move
             if (piece_at_(advanced_pos, square_vec).player() == other_player
             (player_) ||
                 no_line) {
@@ -127,11 +132,6 @@ Pawn::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_
 
 Knight::Knight(Player player, Position pos)
         :Piece(player, pos)
-        // these sprites are just as a test, not necessarily final choice for image
-        // use ternary operator to determine which sprite to use based on player
-        //  piece_sprite_(player==Player::light ?
-        //                ge211::Image_sprite("./Resources/white-pawn.png") :
-        //                ge211::Image_sprite("./Resources/dark-pawn.png"))
 {}
 
 Position_set
@@ -147,11 +147,6 @@ Knight::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &squar
 
 Bishop::Bishop(Player player, Position pos)
         :Piece(player, pos)
-        // these sprites are just as a test, not necessarily final choice for image
-        // use ternary operator to determine which sprite to use based on player
-        //  piece_sprite_(player==Player::light ?
-        //                ge211::Image_sprite("./Resources/white-pawn.png") :
-        //                ge211::Image_sprite("./Resources/dark-pawn.png"))
 {}
 
 Position_set
@@ -166,11 +161,6 @@ Bishop::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &squar
 
 Rook::Rook(Player player, Position pos)
         :Piece(player, pos)
-// these sprites are just as a test, not necessarily final choice for image
-// use ternary operator to determine which sprite to use based on player
-//  piece_sprite_(player==Player::light ?
-//                ge211::Image_sprite("./Resources/white-pawn.png") :
-//                ge211::Image_sprite("./Resources/dark-pawn.png"))
 {}
 
 Position_set
@@ -185,11 +175,6 @@ Rook::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square_
 
 Queen::Queen(Player player, Position pos)
         :Piece(player, pos)
-// these sprites are just as a test, not necessarily final choice for image
-// use ternary operator to determine which sprite to use based on player
-//  piece_sprite_(player==Player::light ?
-//                ge211::Image_sprite("./Resources/white-pawn.png") :
-//                ge211::Image_sprite("./Resources/dark-pawn.png"))
 {}
 
 Position_set
@@ -205,11 +190,6 @@ Queen::calculate_moves(Position pos, std::vector<std::unique_ptr<Piece>> &square
 
 King::King(Player player, Position pos)
         :Piece(player, pos)
-// these sprites are just as a test, not necessarily final choice for image
-// use ternary operator to determine which sprite to use based on player
-// piece_sprite_(player==Player::light ?
-//   ge211::Image_sprite("./Resources/white-pawn.png") :
-//   ge211::Image_sprite("./Resources/dark-pawn.png"))
 {}
 
 Position_set
