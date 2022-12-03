@@ -92,10 +92,41 @@ TEST_CASE("game over player can't move")
     CHECK(1 + 1 == 2);
 }
 
-// TEST CASE 2: Game is over from checkmate
-TEST_CASE("game over checkmate")
+// TEST CASE 2: Game is over after king is captured
+TEST_CASE("game over king captured")
 {
-    CHECK(1 + 1 == 2);
+    Model m = Model();
+    Test_access access(m);
+
+    // setup checkmate scenario by setting pieces
+    // move light pawn
+    access.on_first_click({4, 6});
+    access.model.check_pos({4, 4});
+    CHECK(strcmp(access.model.piece_type_at({4, 4}), "Pawn") == 0);
+    // move dark pawn
+    access.on_first_click({5, 1});
+    access.model.check_pos({5, 3});
+    CHECK(strcmp(access.model.piece_type_at({5, 3}), "Pawn") == 0);
+    // move light queen
+    access.on_first_click({3, 7});
+    access.model.check_pos({7, 3});
+    CHECK(strcmp(access.model.piece_type_at({7, 3}), "Queen") == 0);
+    // dark makes any move
+    access.on_first_click({1, 1});
+    access.model.check_pos({1, 2});
+
+    // now the light queen can capture the dark king
+    CHECK(access.model.turn()==Player::light);
+    // select light queen
+    access.model.check_pos(Model::Position(7, 3));
+    // move light queen
+    access.model.check_pos(Model::Position(4, 0));
+    // the queen captured the king
+    CHECK(strcmp(access.model.piece_type_at({4, 0}), "Queen") == 0);
+    // light should now be the winner
+    CHECK(access.model.turn() == Player::neither);
+    CHECK(access.model.winner() == Player::light);
+    CHECK(access.model.is_game_over());
 }
 
 // TEST CASE 3: Players can only play moves at allowable times
@@ -199,7 +230,6 @@ TEST_CASE("when can player move")
     CHECK(access.model.square_clicked() == Model::Position(-1, -1));
     // the turn switched again
     CHECK(access.model.turn() == Player::light);
-
 }
 
 // TEST CASES 5-: Pieces' allowable moves are accurate and enforced
@@ -261,7 +291,7 @@ TEST_CASE("Rook moves")
 
     access.on_first_click({5, 4});
 
-    //Capture the pawn on x:5 y:1
+    // Capture the pawn on x:5 y:1
     access.model.check_pos({5, 1});
     CHECK(strcmp(access.model.piece_type_at({5, 1}), "Rook") == 0);
     CHECK_FALSE(strcmp(access.model.piece_type_at({5, 4}), "Rook") == 0);
