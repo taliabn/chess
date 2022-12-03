@@ -8,6 +8,7 @@
 // Returns whether the given position is in bounds.
 bool good_position(ge211::Posn<int>);
 
+// Base class that children build from
 class Piece
 {
 public:
@@ -60,6 +61,7 @@ protected:
     &square_vec);
 };
 
+// Holds pawn child of piece
 class Pawn : public Piece
 {
 public:
@@ -79,7 +81,7 @@ private:
 
 };
 
-
+// Holds knight child of piece
 class Knight : public Piece
 {
 public:
@@ -99,7 +101,7 @@ private:
     const char* piece_type = "Knight";
 };
 
-
+// Holds bishop child of piece
 class Bishop : public Piece
 {
 public:
@@ -119,7 +121,7 @@ private:
     const char* piece_type = "Bishop";
 };
 
-
+// Holds rook child of piece
 class Rook : public Piece
 {
 public:
@@ -138,7 +140,7 @@ private:
     const char* piece_type = "Rook";
 };
 
-
+// Holds queen child of piece
 class Queen : public Piece
 {
 public:
@@ -158,7 +160,7 @@ private:
     const char* piece_type = "Queen";
 };
 
-
+// Holds king child of piece
 class King : public Piece
 {
 public:
