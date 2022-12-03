@@ -38,15 +38,14 @@ public:
     { return turn_; }
 
     // Returns the winner, or `Player::neither` if there is no winner
-    // (either because the game isn't over, or because it's a draw).
     Player winner() const
     { return winner_; }
 
-    // Returns the piece at the given position
-    // this gets used by the controller
+    // Returns the player at the given position
+    // this gets used by the view
     Player operator[](Position) const;
 
-    // returns a playable piece been selected to be moved
+    // returns whether a playable piece has been selected to be moved
     bool piece_clicked() const
     { return piece_clicked_; }
     // returns the position selected piece is in
@@ -64,12 +63,15 @@ public:
     // move a piece
     void check_pos(Position pos);
 
+    // Returns a string that contains the piece type at a given position
     const char* piece_type_at(Position pos) const;
+
     // Returns a rectangle containing all the positions of the board. This
     // can be used to iterate over the positions:
     Rectangle all_positions() const;
+
+    // Converts a board position to an index that can be used for square_vec
     int pos_to_idx(Position pos) const;
-    Position idx_to_pos(int idx) const;
 
 #ifdef CS211_TESTING
     // When this class is compiled for testing, members of a struct named
@@ -79,22 +81,28 @@ public:
 
 
 private:
+    // Set the first turn to the light player. Holds the current player
     Player turn_   = Player::light;
+    // Holds the winner of the game.
     Player winner_ = Player::neither;
-    Dimensions dims_;
-    Piece squares_[8][8]; // holds Pieces to track state of
-    // has a playable piece been selected to be moved
+
+    // Holds whether a piece is selected or not
     bool piece_clicked_ = false;
-    // if so, what position is it located at
+    // If piece is selected, what position is it located at
     Position square_clicked_ = {-1,-1};
-    // game
+
+    // This is a vector of unique pointers. It stores a pointer to the piece
+    // at an index, which can be found with pos_to_inx(pos).
     std::vector<std::unique_ptr<Piece>> square_vec;
+
+    // The position set of viable moves for the highlighted piece to make
     Position_set viable_moves_;
 
     // Returns the piece located in squares_ at the given position
-        // this is used internally within Model
+    // this is used internally within Model
     Piece piece_at_(ge211::Posn<int>);
-    // check if other player has a king
+    // Check if other player has a king. Called after each move, and sets
+    // game over states if player does not have a king.
     bool check_king_();
 
     // If a player doesn't have any possible moves, set the winner to the
